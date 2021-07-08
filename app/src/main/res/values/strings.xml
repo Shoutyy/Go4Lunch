@@ -6,6 +6,10 @@
     <string name="main_activity_description">Find a nice restaurant and invite your co-workers for lunch!</string>
 
     <string name="login">Connexion</string>
+    <string name="twitter">Twitter</string>
+    <string name="google">Google</string>
+    <string name="mail">Mail</string>
+    <string name="facebook">Facebook</string>
 
     <!-- NOTIFICATION SERVICE -->
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>

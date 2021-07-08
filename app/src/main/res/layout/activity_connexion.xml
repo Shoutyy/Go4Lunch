@@ -16,23 +16,6 @@
         android:layout_margin="@dimen/default_large_margin"
         android:background="@drawable/white_bowl" />
 
-    <!-- TITLE GO4LUNCH
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="@dimen/default_title_size"
-        android:textStyle="bold"
-        android:layout_margin="@dimen/default_margin"/> -->
-
-    <!-- DESCRIPTION GO4LUNCH
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/default_text_size"
-        android:text="@string/main_activity_description"
-        android:layout_margin="@dimen/default_margin"/> -->
-
     <!-- BUTTONS CONTAINER -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,10 +31,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_large_margin"
             android:padding="@dimen/default_padding_size"
-            android:text="@string/login"
+            android:text="@string/twitter"
             android:textColor="#fff"
             android:textSize="@dimen/default_text_size"
-            android:background="@drawable/button_twitter" />
+            android:background="@drawable/button_login"
+            android:backgroundTint="@color/twitterColor"/>
 
         <!-- BUTTON GOOGLE -->
         <android.widget.Button
@@ -60,10 +44,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_large_margin"
             android:padding="@dimen/default_padding_size"
-            android:text="@string/login"
+            android:text="@string/google"
             android:textColor="#fff"
             android:textSize="@dimen/default_text_size"
-            android:background="@drawable/button_google" />
+            android:background="@drawable/button_login"
+            android:backgroundTint="@color/googleColor"/>
 
         <!-- BUTTON FACEBOOK -->
         <android.widget.Button
@@ -72,10 +57,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_large_margin"
             android:padding="@dimen/default_padding_size"
-            android:text="@string/login"
+            android:text="@string/facebook"
             android:textColor="#fff"
             android:textSize="@dimen/default_text_size"
-            android:background="@drawable/button_facebook" />
+            android:background="@drawable/button_login"
+            android:backgroundTint="@color/facebookColor"/>
 
         <!-- BUTTON MAIL -->
         <android.widget.Button
@@ -84,10 +70,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_large_margin"
             android:padding="@dimen/default_padding_size"
-            android:text="@string/login"
+            android:text="@string/mail"
             android:textColor="#fff"
             android:textSize="@dimen/default_text_size"
-            android:background="@drawable/button_mail" />
+            android:background="@drawable/button_login"
+            android:backgroundTint="@color/mailColor"/>
 
     </LinearLayout>
 </LinearLayout>
