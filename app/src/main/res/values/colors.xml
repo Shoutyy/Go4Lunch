@@ -11,4 +11,6 @@
     <color name="googleColor">#F44336</color>
     <color name="facebookColor">#2196F3</color>
     <color name="mailColor">#FFC107</color>
+    <color name="connexionColor">#E1710F</color>
+
 </resources>

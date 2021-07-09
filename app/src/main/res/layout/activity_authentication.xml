@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/authentication_layout"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/lunch_portrait">
+
+    <!-- IMAGE VIEW GO4LUNCH -->
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_margin="@dimen/default_large_margin"
+        android:background="@drawable/white_bowl" />
+
+    <!-- BUTTONS CONTAINER -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/default_large_margin">
+
+        <!-- BUTTON TWITTER -->
+        <android.widget.Button
+            android:id="@+id/twitterButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_large_margin"
+            android:padding="@dimen/default_padding_size"
+            android:text="@string/twitter"
+            android:textColor="#fff"
+            android:textSize="@dimen/default_text_size"
+            android:background="@drawable/button_login"
+            android:backgroundTint="@color/twitterColor"/>
+
+        <!-- BUTTON GOOGLE -->
+        <android.widget.Button
+            android:id="@+id/googleButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_large_margin"
+            android:padding="@dimen/default_padding_size"
+            android:text="@string/google"
+            android:textColor="#fff"
+            android:textSize="@dimen/default_text_size"
+            android:background="@drawable/button_login"
+            android:backgroundTint="@color/googleColor"/>
+
+        <!-- BUTTON FACEBOOK -->
+        <android.widget.Button
+            android:id="@+id/facebookButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_large_margin"
+            android:padding="@dimen/default_padding_size"
+            android:text="@string/facebook"
+            android:textColor="#fff"
+            android:textSize="@dimen/default_text_size"
+            android:background="@drawable/button_login"
+            android:backgroundTint="@color/facebookColor"/>
+
+        <!-- BUTTON MAIL -->
+        <android.widget.Button
+            android:id="@+id/mailButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_large_margin"
+            android:padding="@dimen/default_padding_size"
+            android:text="@string/mail"
+            android:textColor="#fff"
+            android:textSize="@dimen/default_text_size"
+            android:background="@drawable/button_login"
+            android:backgroundTint="@color/mailColor"/>
+
+    </LinearLayout>
+</LinearLayout>
