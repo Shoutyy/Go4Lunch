@@ -7,6 +7,8 @@
 
     <string name="login">Connexion</string>
     <string name="twitter">Twitter</string>
+    <string name="twitter_consumer_key" translatable="false"> 3TVIyjnPqUbUmko6QxHo6LflU </string>
+    <string name="twitter_consumer_secret" translatable="false"> 8i2EE13hZktbE4RQXsCgAH2aSurcxbU4vSGlJA2UF9DCSsGcm7 </string>
     <string name="google">Google</string>
     <string name="mail">Mail</string>
     <string name="facebook">Facebook</string>
