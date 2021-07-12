@@ -12,6 +12,8 @@ import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 
 
 
@@ -56,6 +58,7 @@ public class ConnexionActivity extends BaseActivity<ActivityConnexionBinding> {
             .setGoogleButtonId(R.id.googleButton)
             .setEmailButtonId(R.id.mailButton)
             .setTwitterButtonId(R.id.twitterButton)
+            .setFacebookButtonId(R.id.facebookButton)
             // ...
             //.setTosAndPrivacyPolicyId(R.id.baz)
             .build();
@@ -66,7 +69,8 @@ public class ConnexionActivity extends BaseActivity<ActivityConnexionBinding> {
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.GoogleBuilder().build(),
                 new AuthUI.IdpConfig.TwitterBuilder().build(),
-                new AuthUI.IdpConfig.EmailBuilder().build());
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.FacebookBuilder().build());
 
         // Launch the activity
         startActivityForResult(

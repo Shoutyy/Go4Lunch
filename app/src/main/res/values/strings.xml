@@ -12,6 +12,8 @@
     <string name="google">Google</string>
     <string name="mail">Mail</string>
     <string name="facebook">Facebook</string>
+    <string name="facebook_application_id">358472125988469</string>
+    <string name="fb_login_protocol_scheme">fb358472125988469</string>
 
     <!-- NOTIFICATION SERVICE -->
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
