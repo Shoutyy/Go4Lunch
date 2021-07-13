@@ -1,4 +1,4 @@
-package com.example.go4lunch.ui.dashboard;
+package com.example.go4lunch.ui.workmates;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,24 +12,23 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.go4lunch.R;
-import com.example.go4lunch.databinding.FragmentDashboardBinding;
+import com.example.go4lunch.databinding.FragmentWorkmatesBinding;
 
-public class DashboardFragment extends Fragment {
+public class WorkmatesFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
-    private FragmentDashboardBinding binding;
+    private WorkmatesViewModel workmatesViewModel;
+    private FragmentWorkmatesBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
+        workmatesViewModel =
+                new ViewModelProvider(this).get(WorkmatesViewModel.class);
 
-        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        binding = FragmentWorkmatesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        final TextView textView = binding.textNotifications;
+        workmatesViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
