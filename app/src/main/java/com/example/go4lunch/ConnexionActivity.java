@@ -2,6 +2,7 @@ package com.example.go4lunch;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -12,8 +13,6 @@ import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 
 
 
@@ -62,7 +61,6 @@ public class ConnexionActivity extends BaseActivity<ActivityConnexionBinding> {
             // ...
             //.setTosAndPrivacyPolicyId(R.id.baz)
             .build();
-
 
     private void startSignInActivity() {
         // Choose authentication providers
