@@ -1,5 +1,8 @@
 package com.example.go4lunch.ui.map;
 
+import android.content.Context;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.go4lunch.databinding.FragmentMapBinding;
+
+import java.util.ArrayList;
 
 public class MapFragment extends Fragment {
 
@@ -42,4 +47,5 @@ public class MapFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 }
