@@ -41,7 +41,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     SupportMapFragment supportMapFragment;
     GoogleMap mGoogleMap;
 
-    boolean isPermissionGranted;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -112,7 +111,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 supportMapFragment.getMapAsync(googleMap -> {
                     LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                     MarkerOptions options = new MarkerOptions().position(latLng).title("here");
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                     googleMap.addMarker(options);
                 });
             }
