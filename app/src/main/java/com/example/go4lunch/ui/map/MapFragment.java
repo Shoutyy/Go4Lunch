@@ -36,12 +36,16 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
@@ -53,6 +57,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     SupportMapFragment supportMapFragment;
     GoogleMap mGoogleMap;
     private static final String TAG = "MyMapFragment";
+    private static int AUTOCOMPLETE_REQUEST_CODE = 1;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -63,14 +68,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         binding = FragmentMapBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        View button = root.findViewById(R.id.ic_search);
+        button.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startAutocompleteActivity();
+                    }
+                });
 
         String apiKey = getString(R.string.api_key);
         Places.initialize(getActivity().getApplicationContext(), apiKey);
 
         PlacesClient placesClient = Places.createClient(getContext());
-
+/*
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
         autocompleteFragment.setTypeFilter(TypeFilter.ESTABLISHMENT);
         autocompleteFragment.setCountries("FR");
 
@@ -78,6 +90,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 new LatLng(48.8534, 2.3488),
                 new LatLng(48.8534, 2.3488)
         ));
+
+
 
 
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
@@ -93,7 +107,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-
+*/
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(this);
 
@@ -143,4 +157,35 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mGoogleMap = googleMap;
         mGoogleMap.setMyLocationEnabled(true);
     }
+
+    public void startAutocompleteActivity() {
+        Intent intent = new Autocomplete.IntentBuilder(
+                AutocompleteActivityMode.OVERLAY,
+                Arrays.asList(Place.Field.ID, Place.Field.NAME))
+                .setTypeFilter(TypeFilter.ESTABLISHMENT)
+                .setLocationBias(RectangularBounds.newInstance(
+                new LatLng(48.8534, 2.3488),
+                new LatLng(48.8534, 2.3488)))
+                .setCountry("FR")
+                .build(getContext());
+        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+    }
+
+/*
+    @Override
+    public void OnActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getID());
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Log.i(TAG, status.getStatusMessage());
+            } else if (resultCode == RESULT_CANCELED) {
+
+            }
+        }
+    }
+
+ */
 }

@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.map.MapFragment"
+    >
+
+    <item
+        android:id="@+id/ic_search"
+        android:icon="@drawable/ic_action_name"
+        android:title="Search"
+        android:contentDescription="Search map"
+        app:showAsAction="ifRoom" />
+
+</menu>
