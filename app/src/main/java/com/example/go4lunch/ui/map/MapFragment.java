@@ -133,9 +133,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             if (location != null) {
                 supportMapFragment.getMapAsync(googleMap -> {
                     LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    MarkerOptions options = new MarkerOptions().position(latLng).title("here");
+                   // MarkerOptions options = new MarkerOptions().position(latLng).title("here");
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                    googleMap.addMarker(options);
+                   // googleMap.addMarker(options);
                 });
             }
 
