@@ -58,6 +58,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     GoogleMap mGoogleMap;
     private static final String TAG = "MyMapFragment";
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
+    protected  Location mLastLocation;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -117,7 +118,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
-
         return root;
     }
 
@@ -138,7 +138,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                    // googleMap.addMarker(options);
                 });
             }
-
         });
     }
 
