@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.example.go4lunch.NetworkAsyncTask;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.FragmentMapBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -39,7 +41,7 @@ import java.util.Arrays;
 
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, NetworkAsyncTask.Listeners {
 
     private MapViewModel mapViewModel;
     private FragmentMapBinding binding;
@@ -109,6 +111,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
 
+        this.executeHttpRequest();
+
         return root;
     }
 
@@ -161,6 +165,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 .setCountry("FR")
                 .build(getContext());
         startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+    }
+
+    private void executeHttpRequest(){
+        new NetworkAsyncTask(this).execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=48.8532,2.3430&radius=50&type=restaurant&key=AIzaSyAUVpNJRJVf23bYCsyhJPaU8-w2Dpoek8g");
+    }
+
+    @Override
+    public void onPreExecute() {
+        this.updateUIWhenStartingHTTPRequest();
+    }
+
+    @Override
+    public void doInBackground() { }
+
+    @Override
+    public void onPostExecute(String json) {
+        this.updateUIWhenStopingHTTPRequest(json);
+    }
+
+    private void updateUIWhenStartingHTTPRequest() {
+
+    }
+
+    private void updateUIWhenStopingHTTPRequest(String response) {
+
     }
 
 /*
