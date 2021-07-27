@@ -3,9 +3,11 @@ package com.example.go4lunch.ui.map;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.NetworkAsyncTask;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.FragmentMapBinding;
@@ -51,7 +54,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Network
     private static final String TAG = "MyMapFragment";
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
     double currentLat = 0, currentLong = 0;
-
+    //String API_KEY = BuildConfig.MAPS_API_KEY;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -131,7 +134,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Network
                     currentLat = location.getLatitude();
                     currentLong = location.getLongitude();
                    // MarkerOptions options = new MarkerOptions().position(latLng).title("here");
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
                    // googleMap.addMarker(options);
                 });
             }
@@ -169,6 +172,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Network
 
     private void executeHttpRequest(){
         new NetworkAsyncTask(this).execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=48.8532,2.3430&radius=50&type=restaurant&key=AIzaSyAUVpNJRJVf23bYCsyhJPaU8-w2Dpoek8g");
+        //new NetworkAsyncTask(this).execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + currentLat + "," + currentLong + "&radius=50&type=restaurant&key=" + myApiKey);
     }
 
     @Override
@@ -177,7 +181,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Network
     }
 
     @Override
-    public void doInBackground() { }
+    public void doInBackground() {
+
+    }
 
     @Override
     public void onPostExecute(String json) {
