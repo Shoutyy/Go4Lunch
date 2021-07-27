@@ -54,7 +54,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Network
     private static final String TAG = "MyMapFragment";
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
     double currentLat = 0, currentLong = 0;
-    //String API_KEY = BuildConfig.MAPS_API_KEY;
+    String API_KEY = BuildConfig.MAPS_API_KEY;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
