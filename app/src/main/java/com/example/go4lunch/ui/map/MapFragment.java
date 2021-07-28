@@ -74,7 +74,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Network
                 });
 
         String apiKey = getString(R.string.api_key);
-        Places.initialize(getActivity().getApplicationContext(), apiKey);
+        Places.initialize(getActivity().getApplicationContext(), API_KEY);
 
         PlacesClient placesClient = Places.createClient(getContext());
 /*
