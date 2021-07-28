@@ -73,37 +73,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Network
                     }
                 });
 
-        String apiKey = getString(R.string.api_key);
         Places.initialize(getActivity().getApplicationContext(), API_KEY);
 
         PlacesClient placesClient = Places.createClient(getContext());
-/*
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-        autocompleteFragment.setTypeFilter(TypeFilter.ESTABLISHMENT);
-        autocompleteFragment.setCountries("FR");
 
-        autocompleteFragment.setLocationBias(RectangularBounds.newInstance(
-                new LatLng(48.8534, 2.3488),
-                new LatLng(48.8534, 2.3488)
-        ));
-
-
-
-
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(@NonNull @NotNull Place place) {
-                Log.i(TAG ,"Place: " + place.getName() + ", " + place.getId());
-            }
-
-            @Override
-            public void onError(@NonNull @NotNull Status status) {
-                Log.i(TAG , "An error occurred: " + status);
-            }
-        });
-
-*/
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(this);
 
@@ -170,12 +143,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Network
         startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
     }
 
-    private void executeHttpRequest(){
+    private void executeHttpRequest() {
         getCurrentLocation();
-        new NetworkAsyncTask(this).execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + currentLat + "," + currentLong + "&radius=50&type=restaurant&key=" + API_KEY);
-
-        //new NetworkAsyncTask(this).execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=48.8532,2.3430&radius=50&type=restaurant&key=AIzaSyAUVpNJRJVf23bYCsyhJPaU8-w2Dpoek8g");
-       // new NetworkAsyncTask(this).execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + currentLat + "," + currentLong + "&radius=50&type=restaurant&key=" + API_KEY);
+        new NetworkAsyncTask(this).execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=48.8532,2.3430&radius=50&type=restaurant&key=" + API_KEY);
     }
 
     @Override
@@ -201,21 +171,4 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Network
 
     }
 
-/*
-    @Override
-    public void OnActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Place place = Autocomplete.getPlaceFromIntent(data);
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getID());
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                Status status = Autocomplete.getStatusFromIntent(data);
-                Log.i(TAG, status.getStatusMessage());
-            } else if (resultCode == RESULT_CANCELED) {
-
-            }
-        }
-    }
-
- */
 }
