@@ -171,8 +171,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Network
     }
 
     private void executeHttpRequest(){
-        new NetworkAsyncTask(this).execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=48.8532,2.3430&radius=50&type=restaurant&key=AIzaSyAUVpNJRJVf23bYCsyhJPaU8-w2Dpoek8g");
-        //new NetworkAsyncTask(this).execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + currentLat + "," + currentLong + "&radius=50&type=restaurant&key=" + myApiKey);
+        getCurrentLocation();
+        new NetworkAsyncTask(this).execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + currentLat + "," + currentLong + "&radius=50&type=restaurant&key=" + API_KEY);
+
+        //new NetworkAsyncTask(this).execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=48.8532,2.3430&radius=50&type=restaurant&key=AIzaSyAUVpNJRJVf23bYCsyhJPaU8-w2Dpoek8g");
+       // new NetworkAsyncTask(this).execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + currentLat + "," + currentLong + "&radius=50&type=restaurant&key=" + API_KEY);
     }
 
     @Override
