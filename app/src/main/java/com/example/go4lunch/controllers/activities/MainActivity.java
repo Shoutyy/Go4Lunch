@@ -1,7 +1,8 @@
-package com.example.go4lunch;
+package com.example.go4lunch.controllers.activities;
 
 import android.os.Bundle;
 
+import com.example.go4lunch.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;

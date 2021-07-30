@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.go4lunch.ui.map.MapFragment"
+        android:name="com.example.go4lunch.controllers.fragments.map.MapFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_map" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.go4lunch.ui.list.ListFragment"
+        android:name="com.example.go4lunch.controllers.fragments.list.ListFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_list" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.go4lunch.ui.workmates.WorkmatesFragment"
+        android:name="com.example.go4lunch.controllers.fragments.workmates.WorkmatesFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_workmates" />
 </navigation>

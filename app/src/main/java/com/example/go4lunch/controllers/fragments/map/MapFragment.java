@@ -1,9 +1,8 @@
-package com.example.go4lunch.ui.map;
+package com.example.go4lunch.controllers.fragments.map;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -16,18 +15,27 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 
 import com.example.go4lunch.BuildConfig;
-import com.example.go4lunch.NetworkAsyncTask;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.FragmentMapBinding;
+import com.example.go4lunch.models.detail.PlaceDetail;
+import com.example.go4lunch.models.detail.PlaceResult;
+import com.example.go4lunch.models.nerby_search.PlaceInfo;
+import com.example.go4lunch.utils.PlaceStream;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -41,10 +49,10 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.List;
 
 
-
-public class MapFragment extends Fragment implements OnMapReadyCallback, NetworkAsyncTask.Listeners {
+public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private MapViewModel mapViewModel;
     private FragmentMapBinding binding;
@@ -54,7 +62,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Network
     private static final String TAG = "MyMapFragment";
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
     double currentLat = 0, currentLong = 0;
+    String mPosition = currentLat + "," + currentLong;
     String API_KEY = BuildConfig.MAPS_API_KEY;
+    private Disposable disposable;
+    private Marker positionMarker;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -81,13 +92,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Network
         supportMapFragment.getMapAsync(this);
 
         client = LocationServices.getFusedLocationProviderClient(getContext());
+
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             getCurrentLocation();
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
 
-        this.executeHttpRequest();
+       // this.executeHttpRequest();
+        this.executeHttpRequestWithRetrofit();
 
         return root;
     }
@@ -98,6 +111,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Network
         binding = null;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getCurrentLocation();
+    }
+
     private void getCurrentLocation() {
         @SuppressWarnings({"ResourceType"}) Task<Location> task = client.getLastLocation();
         task.addOnSuccessListener(location -> {
@@ -106,9 +125,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Network
                     LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                     currentLat = location.getLatitude();
                     currentLong = location.getLongitude();
-                   // MarkerOptions options = new MarkerOptions().position(latLng).title("here");
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
-                   // googleMap.addMarker(options);
                 });
             }
         });
@@ -141,34 +158,76 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Network
                 .setCountry("FR")
                 .build(getContext());
         startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+       // this.executeHttpRequestWithRetrofit();
     }
 
-    private void executeHttpRequest() {
-        getCurrentLocation();
-        new NetworkAsyncTask(this).execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=48.8532,2.3430&radius=50&type=restaurant&key=" + API_KEY);
+
+    private void executeHttpRequestWithRetrofit() {
+
+        this.disposable = PlaceStream.streamFetchRestaurantDetails("48.8532,2.3430", 3000, "restaurant")
+                .subscribeWith(new DisposableSingleObserver<List<PlaceDetail>>() {
+
+                    @Override
+                    public void onSuccess(List<PlaceDetail> placeDetails) {
+                        positionMarker(placeDetails);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("TestDetail", Log.getStackTraceString(e));
+                    }
+                });
+    }
+
+
+    /**
+     * for position marker
+     *
+     * @param placeDetails
+     */
+    private void positionMarker(List<PlaceDetail> placeDetails) {
+        mGoogleMap.clear();
+        for (PlaceDetail detail : placeDetails) {
+            LatLng latLng = new LatLng(detail.getResult().getGeometry().getLocation().getLat(),
+                    detail.getResult().getGeometry().getLocation().getLng()
+            );
+            positionMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.place_unbook_24))
+                    .title(detail.getResult().getName())
+                    .snippet(detail.getResult().getVicinity()));
+            positionMarker.showInfoWindow();
+            PlaceResult placeDetailsResult = detail.getResult();
+            positionMarker.setTag(placeDetailsResult);
+            Log.d("detailResultMap", String.valueOf(placeDetailsResult));
+        }
     }
 
     @Override
-    public void onPreExecute() {
-        this.updateUIWhenStartingHTTPRequest();
+    public void onDestroy() {
+        super.onDestroy();
+        this.disposeWhenDestroy();
     }
 
-    @Override
-    public void doInBackground() {
-
+    private void disposeWhenDestroy(){
+        if (this.disposable != null && !this.disposable.isDisposed()) this.disposable.dispose();
+    }
+    /*
+    private void updateUIWhenStartingHTTPRequest(){
+       //this.textView.setText("Downloading...");
     }
 
-    @Override
-    public void onPostExecute(String json) {
-        this.updateUIWhenStopingHTTPRequest(json);
+    private void updateUIWhenStopingHTTPRequest(String response){
+        //this.textView.setText(response);
     }
 
-    private void updateUIWhenStartingHTTPRequest() {
-
+    private void updateUIWithListOfRestaurants(List<PlaceInfo> restaurants){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (PlaceInfo restaurant : restaurants){
+           // stringBuilder.append("-"+restaurant.getLogin()+"\n");
+        }
+        updateUIWhenStopingHTTPRequest(stringBuilder.toString());
     }
 
-    private void updateUIWhenStopingHTTPRequest(String response) {
-
-    }
+     */
 
 }

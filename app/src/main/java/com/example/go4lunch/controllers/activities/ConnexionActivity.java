@@ -1,9 +1,10 @@
-package com.example.go4lunch;
+package com.example.go4lunch.controllers.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.WindowManager;
 
+import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ActivityConnexionBinding;
 import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;

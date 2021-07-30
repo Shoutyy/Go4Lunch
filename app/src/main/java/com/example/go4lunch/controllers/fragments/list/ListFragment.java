@@ -1,4 +1,4 @@
-package com.example.go4lunch.ui.workmates;
+package com.example.go4lunch.controllers.fragments.list;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,23 +12,23 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.go4lunch.databinding.FragmentWorkmatesBinding;
+import com.example.go4lunch.databinding.FragmentListBinding;
 
-public class WorkmatesFragment extends Fragment {
+public class ListFragment extends Fragment {
 
-    private WorkmatesViewModel workmatesViewModel;
-    private FragmentWorkmatesBinding binding;
+    private ListViewModel listViewModel;
+    private FragmentListBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        workmatesViewModel =
-                new ViewModelProvider(this).get(WorkmatesViewModel.class);
+        listViewModel =
+                new ViewModelProvider(this).get(ListViewModel.class);
 
-        binding = FragmentWorkmatesBinding.inflate(inflater, container, false);
+        binding = FragmentListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textNotifications;
-        workmatesViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        final TextView textView = binding.textDashboard;
+        listViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

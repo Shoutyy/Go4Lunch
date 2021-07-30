@@ -1,16 +1,16 @@
-package com.example.go4lunch.ui.list;
+package com.example.go4lunch.controllers.fragments.map;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ListViewModel extends ViewModel {
+public class MapViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public ListViewModel() {
+    public MapViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is list fragment");
+        mText.setValue("This is map fragment");
     }
 
     public LiveData<String> getText() {
