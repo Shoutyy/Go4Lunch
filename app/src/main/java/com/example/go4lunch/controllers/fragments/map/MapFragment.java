@@ -180,11 +180,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    /**
-     * for position marker
-     *
-     * @param placeDetails
-     */
     private void positionMarker(List<PlaceDetail> placeDetails) {
         mGoogleMap.clear();
         for (PlaceDetail detail : placeDetails) {
