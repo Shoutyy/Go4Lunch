@@ -9,7 +9,7 @@ public class PlaceDetail {
     @SerializedName("html_attributions")
     @Expose
     private List<Object> htmlAttributions = null;
-    @SerializedName("placeResult")
+    @SerializedName("result")
     @Expose
     private PlaceResult placeResult;
     @SerializedName("status")

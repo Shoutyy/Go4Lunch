@@ -100,7 +100,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
 
        // this.executeHttpRequest();
-        this.executeHttpRequestWithRetrofit();
+
 
         return root;
     }
@@ -126,6 +126,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     currentLat = location.getLatitude();
                     currentLong = location.getLongitude();
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+                    this.executeHttpRequestWithRetrofit();
                 });
             }
         });
@@ -161,15 +162,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
        // this.executeHttpRequestWithRetrofit();
     }
 
-
     private void executeHttpRequestWithRetrofit() {
-
-        this.disposable = PlaceStream.streamFetchRestaurantDetails("48.8532,2.3430", 3000, "restaurant")
+        this.disposable = PlaceStream.streamFetchRestaurantDetails("48.8532,2.3430", 300, "restaurant")
                 .subscribeWith(new DisposableSingleObserver<List<PlaceDetail>>() {
 
                     @Override
                     public void onSuccess(List<PlaceDetail> placeDetails) {
-                        positionMarker(placeDetails);
+                       positionMarker(placeDetails);
                     }
 
                     @Override
@@ -178,7 +177,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     }
                 });
     }
-
 
     private void positionMarker(List<PlaceDetail> placeDetails) {
         mGoogleMap.clear();
@@ -196,6 +194,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             Log.d("detailResultMap", String.valueOf(placeDetailsResult));
         }
     }
+
+
 
     @Override
     public void onDestroy() {
