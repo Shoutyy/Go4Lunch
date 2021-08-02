@@ -1,9 +1,5 @@
 package com.example.go4lunch.models.nerby_search;
 
-import android.location.Location;
-
-
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

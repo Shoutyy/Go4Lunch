@@ -191,6 +191,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     .title(search.getName())
                     .snippet(search.getVicinity()));
         }
+
+
     }
 
 
