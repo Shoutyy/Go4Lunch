@@ -30,10 +30,9 @@ public class PlaceStream {
                 .timeout(10, TimeUnit.SECONDS);
     }
 
-    public static  Single<List<PlaceDetail>> streamFetchRestaurantDetails(String location, int radius, String type){
+    public static  Single<List<ResultSearch>> streamFetchRestaurantDetails(String location, int radius, String type){
         return streamFetchRestaurants(location,radius,type)
                 .flatMapIterable(PlaceInfo::getResults)
-                .flatMap((Function<ResultSearch, Observable<PlaceDetail>>) result -> streamFetchDetails(result.getPlaceId()))
                 .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -25,6 +25,7 @@ import com.example.go4lunch.databinding.FragmentMapBinding;
 import com.example.go4lunch.models.detail.PlaceDetail;
 import com.example.go4lunch.models.detail.PlaceResult;
 import com.example.go4lunch.models.nerby_search.PlaceInfo;
+import com.example.go4lunch.models.nerby_search.ResultSearch;
 import com.example.go4lunch.utils.PlaceStream;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -164,11 +165,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private void executeHttpRequestWithRetrofit() {
         this.disposable = PlaceStream.streamFetchRestaurantDetails("48.8532,2.3430", 300, "restaurant")
-                .subscribeWith(new DisposableSingleObserver<List<PlaceDetail>>() {
+                .subscribeWith(new DisposableSingleObserver<List<ResultSearch>>() {
 
                     @Override
-                    public void onSuccess(List<PlaceDetail> placeDetails) {
-                       positionMarker(placeDetails);
+                    public void onSuccess(@NotNull List<ResultSearch> resultSearches) {
+                        positionMarker(resultSearches);
                     }
 
                     @Override
@@ -178,20 +179,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 });
     }
 
-    private void positionMarker(List<PlaceDetail> placeDetails) {
+    private void positionMarker(List<ResultSearch> resultSearches) {
         mGoogleMap.clear();
-        for (PlaceDetail detail : placeDetails) {
-            LatLng latLng = new LatLng(detail.getResult().getGeometry().getLocation().getLat(),
-                    detail.getResult().getGeometry().getLocation().getLng()
+
+        for (ResultSearch search : resultSearches) {
+           LatLng latLng = new LatLng(search.getGeometry().getLocation().getLat(),
+                   search.getGeometry().getLocation().getLng()
             );
             positionMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.place_unbook_24))
-                    .title(detail.getResult().getName())
-                    .snippet(detail.getResult().getVicinity()));
-            positionMarker.showInfoWindow();
-            PlaceResult placeDetailsResult = detail.getResult();
-            positionMarker.setTag(placeDetailsResult);
-            Log.d("detailResultMap", String.valueOf(placeDetailsResult));
+                    .title(search.getName())
+                    .snippet(search.getVicinity()));
         }
     }
 
