@@ -30,7 +30,7 @@ public class PlaceStream {
                 .timeout(10, TimeUnit.SECONDS);
     }
 
-    public static  Single<List<ResultSearch>> streamFetchRestaurantDetails(String location, int radius, String type){
+    public static  Single<List<ResultSearch>> streamFetchRestaurantList(String location, int radius, String type){
         return streamFetchRestaurants(location,radius,type)
                 .flatMapIterable(PlaceInfo::getResults)
                 .toList()

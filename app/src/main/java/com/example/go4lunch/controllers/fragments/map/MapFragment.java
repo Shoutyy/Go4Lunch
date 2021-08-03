@@ -71,8 +71,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        mapViewModel =
-                new ViewModelProvider(this).get(MapViewModel.class);
+        mapViewModel = new ViewModelProvider(this).get(MapViewModel.class);
 
         binding = FragmentMapBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -100,9 +99,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
 
-       // this.executeHttpRequest();
-
-
         return root;
     }
 
@@ -126,6 +122,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                     currentLat = location.getLatitude();
                     currentLong = location.getLongitude();
+                    mPosition =  currentLat + "," + currentLong;
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
                     this.executeHttpRequestWithRetrofit();
                 });
@@ -164,7 +161,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void executeHttpRequestWithRetrofit() {
-        this.disposable = PlaceStream.streamFetchRestaurantDetails("48.8532,2.3430", 300, "restaurant")
+        this.disposable = PlaceStream.streamFetchRestaurantList(mPosition, 300, "restaurant")
                 .subscribeWith(new DisposableSingleObserver<List<ResultSearch>>() {
 
                     @Override
@@ -181,7 +178,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private void positionMarker(List<ResultSearch> resultSearches) {
         mGoogleMap.clear();
-
         for (ResultSearch search : resultSearches) {
            LatLng latLng = new LatLng(search.getGeometry().getLocation().getLat(),
                    search.getGeometry().getLocation().getLng()
@@ -191,11 +187,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     .title(search.getName())
                     .snippet(search.getVicinity()));
         }
-
-
     }
-
-
 
     @Override
     public void onDestroy() {
@@ -206,23 +198,4 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void disposeWhenDestroy(){
         if (this.disposable != null && !this.disposable.isDisposed()) this.disposable.dispose();
     }
-    /*
-    private void updateUIWhenStartingHTTPRequest(){
-       //this.textView.setText("Downloading...");
-    }
-
-    private void updateUIWhenStopingHTTPRequest(String response){
-        //this.textView.setText(response);
-    }
-
-    private void updateUIWithListOfRestaurants(List<PlaceInfo> restaurants){
-        StringBuilder stringBuilder = new StringBuilder();
-        for (PlaceInfo restaurant : restaurants){
-           // stringBuilder.append("-"+restaurant.getLogin()+"\n");
-        }
-        updateUIWhenStopingHTTPRequest(stringBuilder.toString());
-    }
-
-     */
-
 }
