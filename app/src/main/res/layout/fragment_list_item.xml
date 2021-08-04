@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:elevation="4dp"
+    android:orientation="horizontal"
+    android:padding="20dp"
+    app:cardBackgroundColor="#F1F1EF"
+    app:cardCornerRadius="5dp">
+
+    <RelativeLayout
+        android:id="@+id/fragment_list_item"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop">
+
+        <TextView
+            android:id="@+id/list_name"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:text=""
+            android:textColor="#050505"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/list_distance"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="234dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@+id/list_name"
+            android:text=""
+            android:textColor="#1A237E"
+            android:textStyle="italic|bold" />
+
+        <TextView
+            android:id="@+id/list_adress"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="30dp"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/list_workmates"
+            android:layout_width="35dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="240dp"
+            android:layout_marginTop="30dp"
+            android:layout_toEndOf="@+id/list_adress"
+            android:drawableStart="@drawable/workmates_coming"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/list_openHours"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="70dp"
+            android:text=""
+            android:textStyle="italic|bold" />
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/list_rating"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="227dp"
+            android:layout_marginTop="60dp"
+            android:layout_toEndOf="@+id/list_openHours"
+            android:numStars="3"
+            android:text=""
+            android:theme="@style/RatingBar" />
+
+        <ImageView
+            android:id="@+id/list_photo"
+            android:layout_width="110dp"
+            android:layout_height="70dp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_toEndOf="@+id/list_distance"
+            android:scaleType="center" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

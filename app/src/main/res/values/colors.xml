@@ -12,5 +12,7 @@
     <color name="facebookColor">#2196F3</color>
     <color name="mailColor">#FFC107</color>
     <color name="connexionColor">#E1710F</color>
+    <color name="color_star_inactive">#CDCDCD</color>
+    <color name="color_star_active">#FBA627</color>
 
 </resources>
