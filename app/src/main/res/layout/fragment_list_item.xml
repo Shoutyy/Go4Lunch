@@ -39,7 +39,7 @@
             android:textStyle="italic|bold" />
 
         <TextView
-            android:id="@+id/list_adress"
+            android:id="@+id/list_address"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -47,13 +47,13 @@
             android:text="" />
 
         <TextView
-            android:id="@+id/list_workmates"
+            android:id="@+id/list_workMates"
             android:layout_width="35dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_marginStart="240dp"
             android:layout_marginTop="30dp"
-            android:layout_toEndOf="@+id/list_adress"
+            android:layout_toEndOf="@+id/list_address"
             android:drawableStart="@drawable/workmates_coming"
             android:text="" />
 
