@@ -40,11 +40,13 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
     public void updateWithData(ResultSearch results, RequestManager glide, String userLocation) {
         //restaurant name
         this.mName.setText(results.getName());
-        /*
-        //restaurant adress
-        this.mAdress.setText(results.getVicinity());
+
+        //restaurant address
+        this.mAddress.setText(results.getVicinity());
+
         //restaurant rating
         restaurantRating(results);
+        /*
         //restaurant distance
         restaurantDistance(mPosition, results.getGeometry().getLocation());
         String distance = Math.round(distanceResults[0]) + "m";
@@ -65,7 +67,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
             }
         }
         if (results.getOpeningHours() == null) {
-            this.mOpenHours.setText(R.string.opening_hours_not_avalaible);
+            this.mOpenHours.setText(R.string.opening_hours_not_available);
             this.mOpenHours.setTextColor(Color.BLACK);
         }
 
@@ -78,6 +80,25 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
         }
 
          */
+
+
+    }
+
+    /**
+     * For rating
+     *
+     * @param results
+     */
+    private void restaurantRating(ResultSearch results) {
+        if (results.getRating() != null) {
+            double restaurantRating = results.getRating();
+            double rating = (restaurantRating / 5) * 3;
+            this.mRatingBar.setRating((float) rating);
+            this.mRatingBar.setVisibility(View.VISIBLE);
+
+        } else {
+            this.mRatingBar.setVisibility(View.GONE);
+        }
     }
 
 }

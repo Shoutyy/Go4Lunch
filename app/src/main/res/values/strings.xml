@@ -43,4 +43,22 @@
     <string name="popup_message_choice_yes">Oui !</string>
     <string name="popup_message_choice_no">Non</string>
 
+    <!-- GO4LUNCH VIEW HOLDER -->
+    <string name="opening_hours_not_available">Opening Hours not available</string>
+    <string name="open_until">Open Until</string>
+    <string name="closing_soon">Closing Soon</string>
+
+    <!-- RESTAURANT VIEW HOLDER-->
+    <string name="eat_at">eat at</string>
+    <string name="not_decided">hasn\'t decided yet</string>
+    <string name="eatWorkmates">eat at</string>
+    <string name="no_decided">hasn\'t decided yet</string>
+    <string name="closed">Closed</string>
+    <string name="your_lunch">YOUR LUNCH</string>
+    <string name="settings">SETTINGS</string>
+    <string name="logout">LOGOUT</string>
+    <string name="chat_workmates">Chat with Workmates</string>
+    <string name="enter_text">Enter Text</string>
+    <string name="photo_resto">photo_resto</string>
+
 </resources>

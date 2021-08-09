@@ -58,6 +58,7 @@ public class ListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
        // this.configureRecyclerView();
+        executeHttpRequestWithRetrofit();
 
         return root;
     }
@@ -77,7 +78,7 @@ public class ListFragment extends Fragment {
      */
 
     private void executeHttpRequestWithRetrofit() {
-        this.disposable = PlaceStream.streamFetchRestaurantList(mPosition, 300, "restaurant")
+        this.disposable = PlaceStream.streamFetchRestaurantList("48.8532217,2.3429833", 300, "restaurant")
                 .subscribeWith(new DisposableSingleObserver<List<ResultSearch>>() {
 
                     @Override
