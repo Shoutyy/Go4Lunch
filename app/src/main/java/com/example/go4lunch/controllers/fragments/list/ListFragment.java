@@ -1,5 +1,7 @@
 package com.example.go4lunch.controllers.fragments.list;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +25,11 @@ import com.example.go4lunch.databinding.FragmentListBinding;
 import com.example.go4lunch.models.nerby_search.ResultSearch;
 import com.example.go4lunch.utils.PlaceStream;
 import com.example.go4lunch.views.ListAdapter;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.Task;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -35,8 +43,11 @@ public class ListFragment extends Fragment {
     private Disposable disposable;
     private List<ResultSearch> resultSearches;
     private ListAdapter adapter;
-    private String mPosition;
     private RecyclerView recyclerView;
+    FusedLocationProviderClient client;
+    private static int AUTOCOMPLETE_REQUEST_CODE = 1;
+    double currentLat = 0, currentLong = 0;
+    String mPosition = currentLat + "," + currentLong;
 
 
 
@@ -57,9 +68,16 @@ public class ListFragment extends Fragment {
         //Set layout manager to position the items
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-       // this.configureRecyclerView();
-        executeHttpRequestWithRetrofit();
+        client = LocationServices.getFusedLocationProviderClient(getContext());
 
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            getCurrentLocation();
+        } else {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+        }
+
+       // this.configureRecyclerView();
+        //executeHttpRequestWithRetrofit();
         return root;
     }
 
@@ -78,7 +96,7 @@ public class ListFragment extends Fragment {
      */
 
     private void executeHttpRequestWithRetrofit() {
-        this.disposable = PlaceStream.streamFetchRestaurantList("48.8532217,2.3429833", 300, "restaurant")
+        this.disposable = PlaceStream.streamFetchRestaurantList(mPosition, 300, "restaurant")
                 .subscribeWith(new DisposableSingleObserver<List<ResultSearch>>() {
 
                     @Override
@@ -93,11 +111,30 @@ public class ListFragment extends Fragment {
                 });
     }
 
-    private void updateUI(List<ResultSearch> resultSearches) {
+    private void getCurrentLocation() {
+        @SuppressWarnings({"ResourceType"}) Task<Location> task = client.getLastLocation();
+        task.addOnSuccessListener(location -> {
+            if (location != null) {
+                currentLat = location.getLatitude();
+                currentLong = location.getLongitude();
+                mPosition =  currentLat + "," + currentLong;
+                this.executeHttpRequestWithRetrofit();
+            }
+        });
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
+        if (requestCode == 44) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getCurrentLocation();
+            }
+        }
+    }
+
+    private void updateUI(List<ResultSearch> resultSearches) {
         this.resultSearches.clear();
         this.resultSearches.addAll(resultSearches);
-
         Log.d("TestUI", resultSearches.toString());
         adapter.notifyDataSetChanged();
     }

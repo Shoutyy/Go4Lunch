@@ -1,6 +1,12 @@
 package com.example.go4lunch.views;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,13 +16,26 @@ import android.widget.TextView;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.BuildConfig;
+import com.example.go4lunch.controllers.activities.MainActivity;
 import com.example.go4lunch.models.nerby_search.ResultSearch;
 import com.example.go4lunch.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.Task;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.time.Period;
+import java.util.Calendar;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ListViewHolder extends RecyclerView.ViewHolder {
+public class ListViewHolder extends RecyclerView.ViewHolder  {
     String API_KEY = BuildConfig.MAPS_API_KEY;
+    private float[] distanceResults = new float[3];
+    FusedLocationProviderClient client;
 
     TextView mName;
     TextView mAddress;
@@ -25,6 +44,8 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
     RatingBar mRatingBar;
     TextView mDistance;
     TextView mWorkmates;
+    double currentLat = 0, currentLong = 0;
+    String mPosition = currentLat + "," + currentLong;
 
     public ListViewHolder(View itemView) {
         super(itemView);
@@ -35,6 +56,20 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
         mRatingBar = itemView.findViewById(R.id.list_rating);
         mDistance = itemView.findViewById(R.id.list_distance);
         mWorkmates = itemView.findViewById(R.id.list_workMates);
+
+
+
+        //Context context = itemView.getContext();
+        /*
+        client = LocationServices.getFusedLocationProviderClient(getContext());
+
+        if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            getCurrentLocation();
+        } else {
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+        }
+
+         */
     }
 
     public void updateWithData(ResultSearch results, RequestManager glide, String userLocation) {
@@ -46,15 +81,18 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
 
         //restaurant rating
         restaurantRating(results);
-        /*
+
+
         //restaurant distance
         restaurantDistance(mPosition, results.getGeometry().getLocation());
         String distance = Math.round(distanceResults[0]) + "m";
         this.mDistance.setText(distance);
         Log.d("TestDistance", distance);
 
+        /*
         //for numberWorkmates
         numberWorkmates(results.getPlaceId());
+        */
 
         //for retrieve opening hours (open or closed)
         if (results.getOpeningHours() != null) {
@@ -63,9 +101,11 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
                 this.mOpenHours.setText(R.string.closed);
                 this.mOpenHours.setTextColor(Color.RED);
             } else if (results.getOpeningHours().getOpenNow().toString().equals("true")) {
-                getHoursInfo(results);
+                this.mOpenHours.setText(R.string.open);
+                this.mOpenHours.setTextColor(Color.GREEN);
             }
         }
+
         if (results.getOpeningHours() == null) {
             this.mOpenHours.setText(R.string.opening_hours_not_available);
             this.mOpenHours.setTextColor(Color.BLACK);
@@ -78,10 +118,25 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
         } else {
             mPhoto.setImageResource(R.drawable.no_picture);
         }
+    }
 
-         */
+    private void getCurrentLocation() {
+        @SuppressWarnings({"ResourceType"}) Task<Location> task = client.getLastLocation();
+        task.addOnSuccessListener(location -> {
+            if (location != null) {
+                currentLat = location.getLatitude();
+                currentLong = location.getLongitude();
+                mPosition =  currentLat + "," + currentLong;
+            }
+        });
+    }
 
-
+    public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
+        if (requestCode == 44) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getCurrentLocation();
+            }
+        }
     }
 
     /**
@@ -100,5 +155,55 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
             this.mRatingBar.setVisibility(View.GONE);
         }
     }
+
+    /**
+     * For calculate restaurant distance
+     *
+     * @param startLocation
+     * @param endLocation
+     */
+    private void restaurantDistance(String startLocation, com.example.go4lunch.models.nerby_search.Location endLocation) {
+        String[] separatedStart = startLocation.split(",");
+        double startLatitude = Double.parseDouble(separatedStart[0]);
+        double startLongitude = Double.parseDouble(separatedStart[1]);
+        double endLatitude = endLocation.getLat();
+        double endLongitude = endLocation.getLng();
+        android.location.Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, distanceResults);
+    }
+
+    /*
+    /**
+     * For retrieve number workmates who choose restaurant
+     *
+     * @param placeId
+     */
+    /*
+    private void numberWorkmates(String placeId) {
+
+        UserHelper.getUsersCollection()
+                .whereEqualTo("placeId", placeId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot documentSnapshot : Objects.requireNonNull(task.getResult())) {
+                                Log.d("numberWorkmates", documentSnapshot.getId() + " " + documentSnapshot.getData());
+                            }
+                            int numberWorkmates = Objects.requireNonNull(task.getResult()).size();
+                            String workmatesNumber = "(" + numberWorkmates + ")";
+                            mWormates.setText(workmatesNumber);
+
+
+                        } else {
+                            Log.e("numberMatesError", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+     */
+
 
 }
