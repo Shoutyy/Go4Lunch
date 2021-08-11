@@ -17,6 +17,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.Task;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ListViewHolder extends RecyclerView.ViewHolder  {
@@ -74,10 +75,12 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
 
             if (results.getOpeningHours().getOpenNow().toString().equals("false")) {
                 this.mOpenHours.setText(R.string.closed);
-                this.mOpenHours.setTextColor(Color.RED);
+                this.mOpenHours.setTextColor((ContextCompat.getColor(itemView.getContext(),
+                        R.color.closed)));
             } else if (results.getOpeningHours().getOpenNow().toString().equals("true")) {
                 this.mOpenHours.setText(R.string.open);
-                this.mOpenHours.setTextColor(Color.GREEN);
+                this.mOpenHours.setTextColor((ContextCompat.getColor(itemView.getContext(),
+                        R.color.open)));
             }
         }
 
@@ -89,7 +92,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
         //for add photos with Glide
         if (results.getPhotos() != null && !results.getPhotos().isEmpty()) {
             glide.load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=400&photoreference=" + results.getPhotos().get(0).getPhotoReference() + "&key=" + API_KEY)
-                    .apply(RequestOptions.circleCropTransform()).into(mPhoto);
+                    .into(mPhoto);
         } else {
             mPhoto.setImageResource(R.drawable.no_picture);
         }
