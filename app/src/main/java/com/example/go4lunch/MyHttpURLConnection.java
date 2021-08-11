@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
+/*
 public class MyHttpURLConnection {
     public static String startHttpRequest(String urlString){
 
@@ -38,3 +38,5 @@ public class MyHttpURLConnection {
         return stringBuilder.toString();
     }
 }
+
+ */

@@ -52,6 +52,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.fragment_list_item, parent, false);
 
+
         return new ListViewHolder(view);
     }
 

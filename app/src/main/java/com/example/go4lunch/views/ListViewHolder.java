@@ -1,10 +1,5 @@
 package com.example.go4lunch.views;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.util.Log;
@@ -16,20 +11,12 @@ import android.widget.TextView;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.BuildConfig;
-import com.example.go4lunch.controllers.activities.MainActivity;
 import com.example.go4lunch.models.nerby_search.ResultSearch;
 import com.example.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.Task;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.time.Period;
-import java.util.Calendar;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ListViewHolder extends RecyclerView.ViewHolder  {
@@ -57,22 +44,11 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
         mDistance = itemView.findViewById(R.id.list_distance);
         mWorkmates = itemView.findViewById(R.id.list_workMates);
 
-
-
-        //Context context = itemView.getContext();
-        /*
-        client = LocationServices.getFusedLocationProviderClient(getContext());
-
-        if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            getCurrentLocation();
-        } else {
-            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
-        }
-
-         */
+        client = LocationServices.getFusedLocationProviderClient(itemView.getContext());
+        getCurrentLocation();
     }
 
-    public void updateWithData(ResultSearch results, RequestManager glide, String userLocation) {
+    public void updateWithData(ResultSearch results, RequestManager glide, String mPosition) {
         //restaurant name
         this.mName.setText(results.getName());
 
@@ -82,9 +58,8 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
         //restaurant rating
         restaurantRating(results);
 
-
         //restaurant distance
-        restaurantDistance(mPosition, results.getGeometry().getLocation());
+        restaurantDistance("48.8532217,2.3429833", results.getGeometry().getLocation());
         String distance = Math.round(distanceResults[0]) + "m";
         this.mDistance.setText(distance);
         Log.d("TestDistance", distance);
@@ -120,6 +95,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
         }
     }
 
+
     private void getCurrentLocation() {
         @SuppressWarnings({"ResourceType"}) Task<Location> task = client.getLastLocation();
         task.addOnSuccessListener(location -> {
@@ -128,15 +104,8 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
                 currentLong = location.getLongitude();
                 mPosition =  currentLat + "," + currentLong;
             }
-        });
-    }
 
-    public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
-        if (requestCode == 44) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getCurrentLocation();
-            }
-        }
+        });
     }
 
     /**

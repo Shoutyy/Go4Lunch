@@ -3,6 +3,7 @@ package com.example.go4lunch;
 import android.util.Log;
 
 import java.lang.ref.WeakReference;
+/*
 
 public class NetworkAsyncTask extends android.os.AsyncTask<String, Void, String> {
     public interface Listeners {
@@ -38,3 +39,5 @@ public class NetworkAsyncTask extends android.os.AsyncTask<String, Void, String>
         return MyHttpURLConnection.startHttpRequest(url[0]);
     }
 }
+
+ */
