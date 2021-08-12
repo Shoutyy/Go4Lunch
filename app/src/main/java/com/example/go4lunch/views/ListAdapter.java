@@ -76,4 +76,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
     public int getItemCount() {
         return this.resultSearches.size();
     }
+
+    public ResultSearch getRestaurant(int position){
+        return this.resultSearches.get(position);
+    }
 }

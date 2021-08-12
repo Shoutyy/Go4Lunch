@@ -1,6 +1,7 @@
 package com.example.go4lunch.controllers.fragments.list;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -23,12 +24,11 @@ import com.example.go4lunch.R;
 
 import com.example.go4lunch.databinding.FragmentListBinding;
 import com.example.go4lunch.models.nerby_search.ResultSearch;
+import com.example.go4lunch.utils.ItemClickSupport;
 import com.example.go4lunch.utils.PlaceStream;
 import com.example.go4lunch.views.ListAdapter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
 
 import org.jetbrains.annotations.NotNull;
@@ -43,13 +43,11 @@ public class ListFragment extends Fragment {
     private Disposable disposable;
     private List<ResultSearch> resultSearches;
     private ListAdapter adapter;
-    private RecyclerView recyclerView;
+    private RecyclerView mRecyclerView;
     FusedLocationProviderClient client;
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
     double currentLat = 0, currentLong = 0;
     String mPosition = currentLat + "," + currentLong;
-
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -58,15 +56,23 @@ public class ListFragment extends Fragment {
 
         binding = FragmentListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        RecyclerView recyclerView = root.findViewById(R.id.fragment_list_RV);
+        RecyclerView mRecyclerView = root.findViewById(R.id.fragment_list_RV);
 
+        /*
         this.resultSearches = new ArrayList<>();
         //create adapter passing the list of restaurants
         this.adapter = new ListAdapter(this.resultSearches, Glide.with(this), this.mPosition);
+
         //Attach the adapter to the recyclerview to items
-        recyclerView.setAdapter(adapter);
+        mRecyclerView.setAdapter(adapter);
         //Set layout manager to position the items
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+         */
+
+
+
+        this.configureRecyclerView();
 
         client = LocationServices.getFusedLocationProviderClient(getContext());
 
@@ -76,24 +82,24 @@ public class ListFragment extends Fragment {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
 
-       // this.configureRecyclerView();
         //executeHttpRequestWithRetrofit();
         return root;
     }
 
-    /*
+
     private void configureRecyclerView() {
         //reset List
         this.resultSearches = new ArrayList<>();
         //create adapter passing the list of restaurants
         this.adapter = new ListAdapter(this.resultSearches, Glide.with(this), this.mPosition);
         //Attach the adapter to the recyclerview to items
-        recyclerView.setAdapter(adapter);
+        mRecyclerView.setAdapter(adapter);
         //Set layout manager to position the items
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
-     */
+
+
 
     private void executeHttpRequestWithRetrofit() {
         this.disposable = PlaceStream.streamFetchRestaurantList(mPosition, 300, "restaurant")
@@ -119,6 +125,8 @@ public class ListFragment extends Fragment {
                 currentLong = location.getLongitude();
                 mPosition =  currentLat + "," + currentLong;
                 this.executeHttpRequestWithRetrofit();
+                this.configureOnClickRecyclerView();
+
             }
         });
     }
@@ -152,8 +160,32 @@ public class ListFragment extends Fragment {
         this.disposeWhenDestroy();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     private void disposeWhenDestroy() {
         if (this.disposable != null && !this.disposable.isDisposed()) this.disposable.dispose();
     }
 
+
+    /**
+     * Configure item click on RecyclerView
+     */
+
+    private void configureOnClickRecyclerView() {
+        ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_list_item)
+                .setOnItemClickListener(((recyclerView, position, v) -> {
+                    /*
+                    ResultSearch resultSearch = adapter.getRestaurant(position);
+                    Intent intent = new Intent(getActivity(), RestaurantActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("resultSearches", resultSearch.getPlaceId());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+
+                     */
+                }));
+    }
 }
