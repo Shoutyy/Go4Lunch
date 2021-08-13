@@ -1,6 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".controllers.activities.RestaurantActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/restaurant_photo"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:contentDescription="@string/photo_resto" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_ok_btn"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="300dp"
+        android:layout_marginTop="170dp"
+        android:clickable="true"
+        android:elevation="8dp"
+        android:src="@drawable/baseline_done_white_24"
+        app:fabSize="auto"
+        android:focusable="true" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="200dp"
+        android:background="@color/colorPrimaryDark">
+
+        <TextView
+            android:id="@+id/restaurant_name"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:textColor="#ffff"
+            android:textStyle="bold|italic"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="7dp"
+            android:text="" />
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+
+            android:id="@+id/rating_bar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="230dp"
+            android:layout_marginTop="7dp"
+            android:numStars="3"
+            android:text=""
+            android:theme="@style/RatingBarRestaurant" />
+
+        <TextView
+            android:id="@+id/restaurant_address"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:textColor="#ffff"
+            android:textStyle="bold|italic"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="27dp"
+            android:text="" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/action_btn"
+        android:layout_marginTop="270dp"
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/call_btn"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_horizontal"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="#FFFFFF"
+            android:drawableTop="@drawable/round_call_black_48dp"
+            android:drawableTint="@color/colorPrimaryDark"
+            android:text="@string/call_btn"
+            android:textAlignment="center"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/star_btn"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_vertical"
+            android:background="#00FFFFFF"
+            android:drawableTop="@drawable/round_star_black_48dp"
+            android:drawableTint="@color/colorPrimaryDark"
+            android:text="@string/like_btn"
+            android:textAlignment="center"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/web_btn"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="30dp"
+            android:background="#00FFFFFF"
+            android:drawableTop="@drawable/round_public_black_48dp"
+            android:drawableTint="@color/colorPrimaryDark"
+            android:text="@string/website_btn"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            tools:ignore="RtlCompat" />
+
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/restaurant_RV"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/action_btn"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+
+</RelativeLayout>

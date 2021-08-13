@@ -62,4 +62,10 @@
     <string name="enter_text">Enter Text</string>
     <string name="photo_resto">photo_resto</string>
 
+    <!--restaurant sheet-->
+    <string name="like_btn" translatable="false">LIKE</string>
+    <string name="website_btn">WEBSITE</string>
+    <string name="call_btn">CALL</string>
+    <string name="restaurantMatesPhoto">restaurant Mates Photo</string>
+
 </resources>

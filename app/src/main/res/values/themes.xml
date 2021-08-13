@@ -25,4 +25,9 @@
         <item name="colorControlNormal">@color/color_star_inactive</item>
         <item name="colorControlActivated">@color/color_star_active</item>
     </style>
+
+    <style name="RatingBarRestaurant" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/color_star_inactive</item>
+        <item name="colorControlActivated">@color/color_star_active</item>
+    </style>
 </resources>
