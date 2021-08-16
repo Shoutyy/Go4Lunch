@@ -28,5 +28,8 @@
         <activity
             android:label="MainActivity"
             android:name=".controllers.activities.ConnexionActivity"/>
+        <activity
+            android:label="RestaurantActivity"
+            android:name=".controllers.activities.RestaurantActivity"/>
     </application>
 </manifest>

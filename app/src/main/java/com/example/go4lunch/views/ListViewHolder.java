@@ -1,5 +1,7 @@
 package com.example.go4lunch.views;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.util.Log;
@@ -17,6 +19,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.Task;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,7 +49,16 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
         mWorkmates = itemView.findViewById(R.id.list_workMates);
 
         client = LocationServices.getFusedLocationProviderClient(itemView.getContext());
-        getCurrentLocation();
+
+        /*
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            getCurrentLocation();
+        } else {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+        }
+
+         */
+
     }
 
     public void updateWithData(ResultSearch results, RequestManager glide, String mPosition) {
@@ -56,14 +68,12 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
         //restaurant address
         this.mAddress.setText(results.getVicinity());
 
+        getCurrentLocation(results);
         //restaurant rating
         restaurantRating(results);
 
         //restaurant distance
-        restaurantDistance("48.8532217,2.3429833", results.getGeometry().getLocation());
-        String distance = Math.round(distanceResults[0]) + "m";
-        this.mDistance.setText(distance);
-        Log.d("TestDistance", distance);
+
 
         /*
         //for numberWorkmates
@@ -99,13 +109,17 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
     }
 
 
-    private void getCurrentLocation() {
+    private void getCurrentLocation(ResultSearch results) {
         @SuppressWarnings({"ResourceType"}) Task<Location> task = client.getLastLocation();
         task.addOnSuccessListener(location -> {
             if (location != null) {
                 currentLat = location.getLatitude();
                 currentLong = location.getLongitude();
                 mPosition =  currentLat + "," + currentLong;
+                restaurantDistance(mPosition, results.getGeometry().getLocation());
+                String distance = Math.round(distanceResults[0]) + "m";
+                this.mDistance.setText(distance);
+                Log.d("TestDistance", distance);
             }
 
         });

@@ -22,6 +22,7 @@ import io.reactivex.observers.DisposableSingleObserver;
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.R;
 
+import com.example.go4lunch.controllers.activities.RestaurantActivity;
 import com.example.go4lunch.databinding.FragmentListBinding;
 import com.example.go4lunch.models.nerby_search.ResultSearch;
 import com.example.go4lunch.utils.ItemClickSupport;
@@ -56,7 +57,7 @@ public class ListFragment extends Fragment {
 
         binding = FragmentListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        RecyclerView mRecyclerView = root.findViewById(R.id.fragment_list_RV);
+        mRecyclerView = binding.fragmentListRV;
 
         /*
         this.resultSearches = new ArrayList<>();
@@ -69,8 +70,6 @@ public class ListFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
          */
-
-
 
         this.configureRecyclerView();
 
@@ -86,7 +85,6 @@ public class ListFragment extends Fragment {
         return root;
     }
 
-
     private void configureRecyclerView() {
         //reset List
         this.resultSearches = new ArrayList<>();
@@ -97,9 +95,6 @@ public class ListFragment extends Fragment {
         //Set layout manager to position the items
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
-
-
-
 
     private void executeHttpRequestWithRetrofit() {
         this.disposable = PlaceStream.streamFetchRestaurantList(mPosition, 300, "restaurant")
@@ -126,7 +121,6 @@ public class ListFragment extends Fragment {
                 mPosition =  currentLat + "," + currentLong;
                 this.executeHttpRequestWithRetrofit();
                 this.configureOnClickRecyclerView();
-
             }
         });
     }
@@ -146,7 +140,6 @@ public class ListFragment extends Fragment {
         Log.d("TestUI", resultSearches.toString());
         adapter.notifyDataSetChanged();
     }
-
 
     @Override
     public void onDestroyView() {
@@ -169,15 +162,9 @@ public class ListFragment extends Fragment {
         if (this.disposable != null && !this.disposable.isDisposed()) this.disposable.dispose();
     }
 
-
-    /**
-     * Configure item click on RecyclerView
-     */
-
     private void configureOnClickRecyclerView() {
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_list_item)
                 .setOnItemClickListener(((recyclerView, position, v) -> {
-                    /*
                     ResultSearch resultSearch = adapter.getRestaurant(position);
                     Intent intent = new Intent(getActivity(), RestaurantActivity.class);
                     Bundle bundle = new Bundle();
@@ -185,7 +172,6 @@ public class ListFragment extends Fragment {
                     intent.putExtras(bundle);
                     startActivity(intent);
 
-                     */
                 }));
     }
 }
