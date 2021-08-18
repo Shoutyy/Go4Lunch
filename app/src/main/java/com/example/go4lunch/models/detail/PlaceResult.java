@@ -1,6 +1,8 @@
 package com.example.go4lunch.models.detail;
 
 import java.util.List;
+
+import com.example.go4lunch.models.nerby_search.Photo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -30,6 +32,9 @@ public class PlaceResult {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("photos")
+    @Expose
+    private List<Photo> mPhotos;
     @SerializedName("place_id")
     @Expose
     private String placeId;
@@ -121,6 +126,10 @@ public class PlaceResult {
     public void setName(String name) {
         this.name = name;
     }
+
+    public List<Photo> getPhotos() { return mPhotos; }
+
+    public void setPhotos(List<Photo> photos) { mPhotos = photos; }
 
     public String getPlaceId() {
         return placeId;

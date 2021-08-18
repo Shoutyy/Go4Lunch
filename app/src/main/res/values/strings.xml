@@ -68,4 +68,9 @@
     <string name="call_btn">CALL</string>
     <string name="restaurantMatesPhoto">restaurant Mates Photo</string>
 
+    <!--RestaurantActivity-->
+    <string name="no_phone_available">No Phone Available</string>
+    <string name="permission_denied">Permission Denied</string>
+    <string name="no_website">No Website</string>
+
 </resources>
