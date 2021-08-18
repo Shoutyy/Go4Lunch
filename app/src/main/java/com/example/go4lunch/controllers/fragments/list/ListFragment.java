@@ -1,6 +1,7 @@
 package com.example.go4lunch.controllers.fragments.list;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -113,7 +115,7 @@ public class ListFragment extends Fragment {
     }
 
     private void getCurrentLocation() {
-        @SuppressWarnings({"ResourceType"}) Task<Location> task = client.getLastLocation();
+        @SuppressLint("MissingPermission") @SuppressWarnings({"ResourceType"}) Task<Location> task = client.getLastLocation();
         task.addOnSuccessListener(location -> {
             if (location != null) {
                 currentLat = location.getLatitude();
@@ -167,11 +169,9 @@ public class ListFragment extends Fragment {
                 .setOnItemClickListener(((recyclerView, position, v) -> {
                     ResultSearch resultSearch = adapter.getRestaurant(position);
                     Intent intent = new Intent(getActivity(), RestaurantActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("resultSearches", resultSearch.getPlaceId());
-                    intent.putExtras(bundle);
+                    intent.putExtra("placeId", resultSearch.getPlaceId());
                     startActivity(intent);
-
+                    Toast.makeText(getContext(), "You clicked on restaurant : "+resultSearch.getPlaceId(), Toast.LENGTH_SHORT).show();
                 }));
     }
 }

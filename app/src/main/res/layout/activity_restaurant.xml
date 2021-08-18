@@ -12,7 +12,7 @@
         android:id="@+id/restaurant_photo"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:contentDescription="@string/photo_resto" />
+        android:contentDescription="@string/photo_restaurant" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_ok_btn"
@@ -78,7 +78,7 @@
             android:layout_gravity="start|center_horizontal"
             android:layout_marginStart="30dp"
             android:backgroundTint="#FFFFFF"
-            android:drawableTop="@drawable/round_call_black_48dp"
+            android:drawableTop="@drawable/round_call_black_24"
             android:drawableTint="@color/colorPrimaryDark"
             android:text="@string/call_btn"
             android:textAlignment="center"
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_vertical"
             android:background="#00FFFFFF"
-            android:drawableTop="@drawable/round_star_black_48dp"
+            android:drawableTop="@drawable/round_star_black_24"
             android:drawableTint="@color/colorPrimaryDark"
             android:text="@string/like_btn"
             android:textAlignment="center"
@@ -103,7 +103,7 @@
             android:layout_gravity="end|center_horizontal"
             android:layout_marginEnd="30dp"
             android:background="#00FFFFFF"
-            android:drawableTop="@drawable/round_public_black_48dp"
+            android:drawableTop="@drawable/round_public_black_24"
             android:drawableTint="@color/colorPrimaryDark"
             android:text="@string/website_btn"
             android:textAlignment="center"

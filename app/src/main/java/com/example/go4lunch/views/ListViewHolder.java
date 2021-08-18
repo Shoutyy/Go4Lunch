@@ -1,6 +1,7 @@
 package com.example.go4lunch.views;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -110,7 +111,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
 
 
     private void getCurrentLocation(ResultSearch results) {
-        @SuppressWarnings({"ResourceType"}) Task<Location> task = client.getLastLocation();
+        @SuppressLint("MissingPermission") @SuppressWarnings({"ResourceType"}) Task<Location> task = client.getLastLocation();
         task.addOnSuccessListener(location -> {
             if (location != null) {
                 currentLat = location.getLatitude();
@@ -121,7 +122,6 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
                 this.mDistance.setText(distance);
                 Log.d("TestDistance", distance);
             }
-
         });
     }
 
