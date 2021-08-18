@@ -61,39 +61,11 @@ public class RestaurantActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * For retrieve data to ListFragment
-     */
     private void retrieveData() {
-
-        Intent intent = this.getIntent();
-
-        Bundle extras = intent.getExtras();
-        String placeId = extras.getString("placeId");
-
-
-        /*
-        ResultSearch results = null;
-
-        if (bundle != null) {
-            results = (ResultSearch) bundle.getSerializable("resultSearches");
-        }
-
-
-        if (results != null) {
-            updateUI(results, mGlide);
-            placeId = results.getPlaceId();
-        }
-
-         */
+        String placeId = getIntent().getStringExtra("placeId");
     }
 
-    /**
-     * For update UI
-     *
-     * @param
-     * @param glide
-     */
+
     private void updateUI(ResultSearch results, RequestManager glide) {
         mGlide = glide;
 
