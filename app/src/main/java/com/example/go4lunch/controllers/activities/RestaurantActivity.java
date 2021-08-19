@@ -111,8 +111,6 @@ public class RestaurantActivity extends AppCompatActivity {
     private void updateUI(PlaceDetail results, RequestManager glide) {
         mGlide = glide;
 
-        //for add photos with Glide
-
         if (results.getResult().getPhotos() != null && !results.getResult().getPhotos().isEmpty()) {
             Glide.with(this)
                     .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=400&photoreference=" + results.getResult().getPhotos().get(0).getPhotoReference() + "&key=" + API_KEY)
@@ -123,7 +121,6 @@ public class RestaurantActivity extends AppCompatActivity {
         }
 
         mRestaurantName.setText(results.getResult().getName());
-
         mRestaurantAddress.setText(results.getResult().getVicinity());
 
         restaurantRating(results);

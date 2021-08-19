@@ -32,5 +32,8 @@
         <activity
             android:label="RestaurantActivity"
             android:name=".controllers.activities.RestaurantActivity"/>
+        <activity
+            android:label="WebViewActivity"
+            android:name=".controllers.activities.WebViewActivity"/>
     </application>
 </manifest>
