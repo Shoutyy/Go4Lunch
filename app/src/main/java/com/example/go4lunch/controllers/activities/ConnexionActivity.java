@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.WindowManager;
 
 import com.example.go4lunch.R;
+import com.example.go4lunch.api.UserHelper;
 import com.example.go4lunch.databinding.ActivityConnexionBinding;
+import com.example.go4lunch.models.User;
 import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
@@ -15,6 +17,9 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.Arrays;
 import java.util.List;
 import androidx.annotation.Nullable;
+
+import static com.example.go4lunch.utils.FirebaseUtils.getCurrentUser;
+import static com.example.go4lunch.utils.FirebaseUtils.onFailureListener;
 
 public class ConnexionActivity extends BaseActivity<ActivityConnexionBinding> {
 
@@ -84,6 +89,24 @@ public class ConnexionActivity extends BaseActivity<ActivityConnexionBinding> {
         Snackbar.make(binding.connexionLayout, message, Snackbar.LENGTH_SHORT).show();
     }
 
+    /**
+     * Http request that create user in firestore
+     */
+    private void createUserInFirestore() {
+        String urlPicture = (getCurrentUser().getPhotoUrl() != null) ?
+                getCurrentUser().getPhotoUrl().toString() : null;
+        String userName = getCurrentUser().getDisplayName();
+        String uid = getCurrentUser().getUid();
+        UserHelper.getUser(uid).addOnSuccessListener(documentSnapshot -> {
+            User user = documentSnapshot.toObject(User.class);
+            if (user != null) {
+                UserHelper.createUser(uid, userName, urlPicture, user.getPlaceId(), user.getLike(), user.getCurrentTime()).addOnFailureListener(onFailureListener());
+            } else {
+                UserHelper.createUser(uid, userName, urlPicture, null, null, 0).addOnFailureListener(onFailureListener());
+            }
+        });
+    }
+
     // Method that handles response after SignIn Activity close
     private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data){
 
@@ -94,6 +117,7 @@ public class ConnexionActivity extends BaseActivity<ActivityConnexionBinding> {
             if (resultCode == RESULT_OK) {
                // userManager.createUser();
                 showSnackBar(getString(R.string.connection_succeed));
+                this.createUserInFirestore();
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             } else {

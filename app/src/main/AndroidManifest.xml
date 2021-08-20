@@ -19,7 +19,7 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity
-            android:name=".controllers.activities.MainActivity"
+            android:name=".controllers.activities.ConnexionActivity"
             android:label="ConnexionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
         </activity>
         <activity
             android:label="MainActivity"
-            android:name=".controllers.activities.ConnexionActivity"/>
+            android:name=".controllers.activities.MainActivity"/>
         <activity
             android:label="RestaurantActivity"
             android:name=".controllers.activities.RestaurantActivity"/>

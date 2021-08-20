@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public class User implements Serializable {
 
-    private boolean userChat;
     private String uid;
     private String username;
     @Nullable
@@ -38,7 +37,6 @@ public class User implements Serializable {
     public ArrayList<String> getLike() {
         return like;
     }
-    public Boolean getUserChat() { return userChat; }
     public int getCurrentTime() {
         return currentTime;
     }
@@ -56,7 +54,6 @@ public class User implements Serializable {
     public void setLike(ArrayList<String> like) {
         this.like = like;
     }
-    public void setUserChat(Boolean chatUser) { userChat = chatUser; }
     private void setCurrentTime(int currentTime){
         this.currentTime = currentTime;
     }

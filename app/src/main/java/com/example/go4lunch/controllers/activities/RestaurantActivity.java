@@ -214,18 +214,33 @@ public class RestaurantActivity extends AppCompatActivity {
     }
 
     public void selectedRestaurant() {
-
         if (placeId != null) {
-            UserHelper.updatePlaceId(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid(), placeId, DatesAndHours.getCurrentTime());
-            mFloatingBtn.setImageDrawable(getResources().getDrawable(R.drawable.baseline_clear_black_24));
-            mFloatingBtn.setTag(UNSELECTED);
+            UserHelper.getUser(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> {
+                User user = documentSnapshot.toObject(User.class);
+                if (user != null) {
+                    if (user.getPlaceId().contains(placeId)) {
+                        UserHelper.updatePlaceId(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid(), placeId, DatesAndHours.getCurrentTime());
+                        mFloatingBtn.setImageDrawable(getResources().getDrawable(R.drawable.baseline_clear_black_24));
+                        mFloatingBtn.setTag(UNSELECTED);
+                    }
+                }
+            });
         }
     }
 
     public void removeRestaurant() {
-        UserHelper.deletePlaceId(Objects.requireNonNull(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()));
-        mFloatingBtn.setImageDrawable(getResources().getDrawable(R.drawable.baseline_done_white_24));
-        mFloatingBtn.setTag(SELECTED);
+        if (placeId != null) {
+            UserHelper.getUser(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> {
+                User user = documentSnapshot.toObject(User.class);
+                if (user != null) {
+                    if (!user.getPlaceId().contains(placeId)) {
+                        UserHelper.deletePlaceId(Objects.requireNonNull(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()));
+                        mFloatingBtn.setImageDrawable(getResources().getDrawable(R.drawable.baseline_done_white_24));
+                        mFloatingBtn.setTag(SELECTED);
+                    }
+                }
+            });
+        }
     }
 
 
@@ -242,10 +257,10 @@ public class RestaurantActivity extends AppCompatActivity {
                 if (user != null) {
                     if (!user.getLike().isEmpty() && user.getLike().contains(placeId)) {
                         UserHelper.deleteLike(FirebaseUtils.getCurrentUser().getUid(), placeId);
-                        mStarBtn.setBackgroundResource(R.color.fui_transparent);
+                        mStarBtn.setBackgroundResource(R.color.color_star_inactive);
                     } else {
                         UserHelper.updateLike(FirebaseUtils.getCurrentUser().getUid(), placeId);
-                        mStarBtn.setBackgroundResource(R.color.quantum_yellow);
+                        mStarBtn.setBackgroundResource(R.color.color_star_active);
                     }
                 }
             });
