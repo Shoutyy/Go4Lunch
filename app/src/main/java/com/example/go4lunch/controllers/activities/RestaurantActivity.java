@@ -28,9 +28,13 @@ import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.R;
+import com.example.go4lunch.api.UserHelper;
 import com.example.go4lunch.models.detail.PlaceDetail;
 import com.example.go4lunch.models.detail.PlaceResult;
 import com.example.go4lunch.models.nerby_search.ResultSearch;
+import com.example.go4lunch.models.User;
+import com.example.go4lunch.utils.DatesAndHours;
+import com.example.go4lunch.utils.FirebaseUtils;
 import com.example.go4lunch.utils.PlaceStream;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -38,6 +42,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RestaurantActivity extends AppCompatActivity {
 
@@ -61,6 +66,9 @@ public class RestaurantActivity extends AppCompatActivity {
     private String formattedPhoneNumber;
     private String url;
 
+    private static final String SELECTED = "SELECTED";
+    private static final String UNSELECTED = "UNSELECTED";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,11 +85,13 @@ public class RestaurantActivity extends AppCompatActivity {
         mStarBtn = findViewById(R.id.star_btn);
 
         retrieveData();
+        floatingBtn();
+        starBtn();
 
     }
 
     private void retrieveData() {
-        String placeId = getIntent().getStringExtra("placeId");
+        placeId = getIntent().getStringExtra("placeId");
         this.executeHttpRequestWithRetrofit(placeId);
     }
 
@@ -188,4 +198,57 @@ public class RestaurantActivity extends AppCompatActivity {
         }
     }
 
+    public void floatingBtn() {
+        mFloatingBtn.setOnClickListener(v -> {
+            if (v.getId() == R.id.floating_ok_btn)
+                if (SELECTED.equals(mFloatingBtn.getTag())) {
+                    selectedRestaurant();
+
+                } else if (mFloatingBtn.isSelected()) {
+                    selectedRestaurant();
+
+                } else {
+                    removeRestaurant();
+                }
+        });
+    }
+
+    public void selectedRestaurant() {
+
+        if (placeId != null) {
+            UserHelper.updatePlaceId(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid(), placeId, DatesAndHours.getCurrentTime());
+            mFloatingBtn.setImageDrawable(getResources().getDrawable(R.drawable.baseline_clear_black_24));
+            mFloatingBtn.setTag(UNSELECTED);
+        }
+    }
+
+    public void removeRestaurant() {
+        UserHelper.deletePlaceId(Objects.requireNonNull(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()));
+        mFloatingBtn.setImageDrawable(getResources().getDrawable(R.drawable.baseline_done_white_24));
+        mFloatingBtn.setTag(SELECTED);
+    }
+
+
+    public void starBtn() {
+        mStarBtn.setOnClickListener(v ->
+                likeRestaurant());
+    }
+
+    public void likeRestaurant() {
+
+        if (placeId != null) {
+            UserHelper.getUser(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> {
+                User user = documentSnapshot.toObject(User.class);
+                if (user != null) {
+                    if (!user.getLike().isEmpty() && user.getLike().contains(placeId)) {
+                        UserHelper.deleteLike(FirebaseUtils.getCurrentUser().getUid(), placeId);
+                        mStarBtn.setBackgroundResource(R.color.fui_transparent);
+                    } else {
+                        UserHelper.updateLike(FirebaseUtils.getCurrentUser().getUid(), placeId);
+                        mStarBtn.setBackgroundResource(R.color.quantum_yellow);
+                    }
+                }
+            });
+        }
+    }
 }

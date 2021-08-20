@@ -22,7 +22,7 @@
         android:layout_marginTop="170dp"
         android:clickable="true"
         android:elevation="8dp"
-        android:src="@drawable/baseline_done_white_24"
+        android:src="@drawable/baseline_clear_black_24"
         app:fabSize="auto"
         android:focusable="true" />
 

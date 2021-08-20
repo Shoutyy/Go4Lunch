@@ -73,4 +73,10 @@
     <string name="permission_denied">Permission Denied</string>
     <string name="no_website">No Website</string>
 
+    <!-- Login -->
+    <string name="auth_canceled">Error authentication canceled</string>
+    <string name="no_internet">Error no internet</string>
+    <string name="unknown_error">Error unknown error</string>
+    <string name="succeed_connection">Connection succeed</string>
+
 </resources>
