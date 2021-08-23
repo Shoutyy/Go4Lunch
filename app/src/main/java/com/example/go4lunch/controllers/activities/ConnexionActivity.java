@@ -103,16 +103,14 @@ public class ConnexionActivity extends BaseActivity<ActivityConnexionBinding> {
             if (user != null) {
                 UserHelper.createUser(uid, userName, urlPicture, user.getPlaceId(), user.getLike(), user.getCurrentTime()).addOnFailureListener(onFailureListener());
             } else {
-                UserHelper.createUser(uid, userName, urlPicture, "", new ArrayList<>(), 0).addOnFailureListener(onFailureListener());
+                UserHelper.createUser(uid, userName, urlPicture, null, null, 0).addOnFailureListener(onFailureListener());
             }
         });
     }
 
     // Method that handles response after SignIn Activity close
     private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data){
-
         IdpResponse response = IdpResponse.fromResultIntent(data);
-
         if (requestCode == RC_SIGN_IN) {
             // SUCCESS
             if (resultCode == RESULT_OK) {

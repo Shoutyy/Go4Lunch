@@ -3,6 +3,8 @@ package com.example.go4lunch.controllers.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -65,9 +67,6 @@ public class RestaurantActivity extends AppCompatActivity {
     private String placeId;
     private String formattedPhoneNumber;
     private String url;
-
-    private static final String SELECTED = "SELECTED";
-    private static final String UNSELECTED = "UNSELECTED";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -168,7 +167,6 @@ public class RestaurantActivity extends AppCompatActivity {
     }
 
     private void makePhoneCall(String formattedPhoneNumber) {
-
         if (ContextCompat.checkSelfPermission(RestaurantActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(RestaurantActivity.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
         } else if (formattedPhoneNumber != null && !formattedPhoneNumber.isEmpty()) {
@@ -210,22 +208,22 @@ public class RestaurantActivity extends AppCompatActivity {
 
     public void floatingBtn() {
         mFloatingBtn.setOnClickListener(v -> {
-                if (v.getId() == R.id.floating_ok_btn) {
-                    if (placeId != null) {
-                        UserHelper.getUser(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> {
-                            User user = documentSnapshot.toObject(User.class);
-                            if (user != null) {
-                                if (user.getPlaceId() != null && user.getPlaceId().contains(placeId)) {
-                                    UserHelper.deletePlaceId(Objects.requireNonNull(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()));
-                                    mFloatingBtn.setImageDrawable(getResources().getDrawable(R.drawable.baseline_clear_black_24));
-                                } else if (user.getPlaceId() == null || !user.getPlaceId().equals(placeId)) {
-                                    UserHelper.updatePlaceId(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid(), placeId, DatesAndHours.getCurrentTime());
-                                    mFloatingBtn.setImageDrawable(getResources().getDrawable(R.drawable.baseline_done_white_24));
-                                }
+            if (v.getId() == R.id.floating_ok_btn) {
+                if (placeId != null) {
+                    UserHelper.getUser(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> {
+                        User user = documentSnapshot.toObject(User.class);
+                        if (user != null) {
+                            if (user.getPlaceId() != null && user.getPlaceId().contains(placeId)) {
+                                UserHelper.deletePlaceId(Objects.requireNonNull(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()));
+                                mFloatingBtn.setImageDrawable(getResources().getDrawable(R.drawable.baseline_clear_black_24));
+                            } else if (user.getPlaceId() == null || !user.getPlaceId().equals(placeId)) {
+                                UserHelper.updatePlaceId(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid(), placeId, DatesAndHours.getCurrentTime());
+                                mFloatingBtn.setImageDrawable(getResources().getDrawable(R.drawable.baseline_done_white_24));
                             }
-                        });
-                    }
+                        }
+                    });
                 }
+            }
         });
     }
 
@@ -239,12 +237,12 @@ public class RestaurantActivity extends AppCompatActivity {
             UserHelper.getUser(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> {
                 User user = documentSnapshot.toObject(User.class);
                 if (user != null) {
-                    if (!user.getLike().isEmpty() && user.getLike().contains(placeId)) {
-                        UserHelper.deleteLike(FirebaseUtils.getCurrentUser().getUid(), placeId);
-                        mStarBtn.setBackgroundResource(R.color.color_star_inactive);
-                    } else {
+                    if (user.getLike() == null || !user.getLike().contains(placeId) ) {
                         UserHelper.updateLike(FirebaseUtils.getCurrentUser().getUid(), placeId);
                         mStarBtn.setBackgroundResource(R.color.color_star_active);
+                    } else if (user.getLike().contains(placeId)){
+                        UserHelper.deleteLike(FirebaseUtils.getCurrentUser().getUid(), placeId);
+                        mStarBtn.setBackgroundResource(R.color.color_star_inactive);
                     }
                 }
             });
