@@ -7,6 +7,7 @@
         <entry key="app/src/main/res/drawable/button_login.xml" value="0.146875" />
         <entry key="app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.146875" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.146875" />
+        <entry key="app/src/main/res/layout/activity_connexion.xml" value="0.15625" />
         <entry key="app/src/main/res/layout/activity_restaurant.xml" value="0.3296903460837887" />
         <entry key="app/src/main/res/layout/activity_restaurant_item.xml" value="0.13072916666666667" />
         <entry key="app/src/main/res/layout/activity_web_view.xml" value="0.1609375" />

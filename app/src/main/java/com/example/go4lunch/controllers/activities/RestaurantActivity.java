@@ -87,12 +87,22 @@ public class RestaurantActivity extends AppCompatActivity {
         retrieveData();
         floatingBtn();
         starBtn();
-
     }
 
     private void retrieveData() {
         placeId = getIntent().getStringExtra("placeId");
         this.executeHttpRequestWithRetrofit(placeId);
+
+        if (placeId != null) {
+            UserHelper.getUser(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> {
+                User user = documentSnapshot.toObject(User.class);
+                if (user != null) {
+                    if (user.getPlaceId() != null && user.getPlaceId().contains(placeId)) {
+                        mFloatingBtn.setImageDrawable(getResources().getDrawable(R.drawable.baseline_done_white_24));
+                    }
+                }
+            });
+        }
     }
 
     private void executeHttpRequestWithRetrofit(String placeId) {
@@ -200,49 +210,24 @@ public class RestaurantActivity extends AppCompatActivity {
 
     public void floatingBtn() {
         mFloatingBtn.setOnClickListener(v -> {
-            if (v.getId() == R.id.floating_ok_btn)
-                if (SELECTED.equals(mFloatingBtn.getTag())) {
-                    selectedRestaurant();
-
-                } else if (mFloatingBtn.isSelected()) {
-                    selectedRestaurant();
-
-                } else {
-                    removeRestaurant();
+                if (v.getId() == R.id.floating_ok_btn) {
+                    if (placeId != null) {
+                        UserHelper.getUser(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> {
+                            User user = documentSnapshot.toObject(User.class);
+                            if (user != null) {
+                                if (user.getPlaceId() != null && user.getPlaceId().contains(placeId)) {
+                                    UserHelper.deletePlaceId(Objects.requireNonNull(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()));
+                                    mFloatingBtn.setImageDrawable(getResources().getDrawable(R.drawable.baseline_clear_black_24));
+                                } else if (user.getPlaceId() == null || !user.getPlaceId().equals(placeId)) {
+                                    UserHelper.updatePlaceId(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid(), placeId, DatesAndHours.getCurrentTime());
+                                    mFloatingBtn.setImageDrawable(getResources().getDrawable(R.drawable.baseline_done_white_24));
+                                }
+                            }
+                        });
+                    }
                 }
         });
     }
-
-    public void selectedRestaurant() {
-        if (placeId != null) {
-            UserHelper.getUser(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> {
-                User user = documentSnapshot.toObject(User.class);
-                if (user != null) {
-                    if (user.getPlaceId().contains(placeId)) {
-                        UserHelper.updatePlaceId(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid(), placeId, DatesAndHours.getCurrentTime());
-                        mFloatingBtn.setImageDrawable(getResources().getDrawable(R.drawable.baseline_clear_black_24));
-                        mFloatingBtn.setTag(UNSELECTED);
-                    }
-                }
-            });
-        }
-    }
-
-    public void removeRestaurant() {
-        if (placeId != null) {
-            UserHelper.getUser(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> {
-                User user = documentSnapshot.toObject(User.class);
-                if (user != null) {
-                    if (!user.getPlaceId().contains(placeId)) {
-                        UserHelper.deletePlaceId(Objects.requireNonNull(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()));
-                        mFloatingBtn.setImageDrawable(getResources().getDrawable(R.drawable.baseline_done_white_24));
-                        mFloatingBtn.setTag(SELECTED);
-                    }
-                }
-            });
-        }
-    }
-
 
     public void starBtn() {
         mStarBtn.setOnClickListener(v ->
@@ -250,7 +235,6 @@ public class RestaurantActivity extends AppCompatActivity {
     }
 
     public void likeRestaurant() {
-
         if (placeId != null) {
             UserHelper.getUser(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> {
                 User user = documentSnapshot.toObject(User.class);

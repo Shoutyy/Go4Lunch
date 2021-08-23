@@ -14,6 +14,7 @@ import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import androidx.annotation.Nullable;
@@ -102,7 +103,7 @@ public class ConnexionActivity extends BaseActivity<ActivityConnexionBinding> {
             if (user != null) {
                 UserHelper.createUser(uid, userName, urlPicture, user.getPlaceId(), user.getLike(), user.getCurrentTime()).addOnFailureListener(onFailureListener());
             } else {
-                UserHelper.createUser(uid, userName, urlPicture, null, null, 0).addOnFailureListener(onFailureListener());
+                UserHelper.createUser(uid, userName, urlPicture, "", new ArrayList<>(), 0).addOnFailureListener(onFailureListener());
             }
         });
     }
