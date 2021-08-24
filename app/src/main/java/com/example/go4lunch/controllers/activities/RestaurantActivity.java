@@ -3,7 +3,9 @@ package com.example.go4lunch.controllers.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,8 +20,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
@@ -239,13 +243,14 @@ public class RestaurantActivity extends AppCompatActivity {
                 if (user != null) {
                     if (user.getLike() == null || !user.getLike().contains(placeId) ) {
                         UserHelper.updateLike(FirebaseUtils.getCurrentUser().getUid(), placeId);
-                        mStarBtn.setBackgroundResource(R.color.color_star_active);
+                        mStarBtn.setAlpha(1);
                     } else if (user.getLike().contains(placeId)){
                         UserHelper.deleteLike(FirebaseUtils.getCurrentUser().getUid(), placeId);
-                        mStarBtn.setBackgroundResource(R.color.color_star_inactive);
+                        mStarBtn.setAlpha(0.3f);
                     }
                 }
             });
         }
     }
+
 }
