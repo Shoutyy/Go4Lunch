@@ -171,7 +171,6 @@ public class ListFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), RestaurantActivity.class);
                     intent.putExtra("placeId", resultSearch.getPlaceId());
                     startActivity(intent);
-                    Toast.makeText(getContext(), "You clicked on restaurant : "+resultSearch.getPlaceId(), Toast.LENGTH_SHORT).show();
                 }));
     }
 }

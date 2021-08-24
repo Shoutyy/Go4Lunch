@@ -103,6 +103,10 @@ public class RestaurantActivity extends AppCompatActivity {
                     if (user.getPlaceId() != null && user.getPlaceId().contains(placeId)) {
                         mFloatingBtn.setImageDrawable(getResources().getDrawable(R.drawable.baseline_done_white_24));
                     }
+                    if (user.getLike().contains(placeId)) {
+                        UserHelper.updateLike(FirebaseUtils.getCurrentUser().getUid(), placeId);
+                        mStarBtn.setAlpha(1);
+                    }
                 }
             });
         }
