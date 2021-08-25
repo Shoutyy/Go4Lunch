@@ -99,11 +99,11 @@ public class RestaurantActivity extends AppCompatActivity {
         if (placeId != null) {
             UserHelper.getUser(Objects.requireNonNull(FirebaseUtils.getCurrentUser()).getUid()).addOnSuccessListener(documentSnapshot -> {
                 User user = documentSnapshot.toObject(User.class);
-                if (user != null) {
+                if (user != null && user.getPlaceId() != null && user.getLike() != null) {
                     if (user.getPlaceId() != null && user.getPlaceId().contains(placeId)) {
                         mFloatingBtn.setImageDrawable(getResources().getDrawable(R.drawable.baseline_done_white_24));
                     }
-                    if (user.getLike().contains(placeId)) {
+                    if (user.getPlaceId() != null && user.getLike().contains(placeId)) {
                         UserHelper.updateLike(FirebaseUtils.getCurrentUser().getUid(), placeId);
                         mStarBtn.setAlpha(1);
                     }

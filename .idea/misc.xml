@@ -12,6 +12,9 @@
         <entry key="app/src/main/res/layout/activity_restaurant_item.xml" value="0.13072916666666667" />
         <entry key="app/src/main/res/layout/activity_web_view.xml" value="0.1609375" />
         <entry key="app/src/main/res/layout/fragment_list.xml" value="0.13072916666666667" />
+        <entry key="app/src/main/res/layout/fragment_list_item.xml" value="0.15572916666666667" />
+        <entry key="app/src/main/res/layout/fragment_workmates.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_workmates_item.xml" value="0.15572916666666667" />
       </map>
     </option>
   </component>
