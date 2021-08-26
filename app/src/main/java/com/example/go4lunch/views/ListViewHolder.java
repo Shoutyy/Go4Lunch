@@ -14,12 +14,19 @@ import android.widget.TextView;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.BuildConfig;
+import com.example.go4lunch.api.UserHelper;
 import com.example.go4lunch.models.nerby_search.ResultSearch;
 import com.example.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Objects;
+
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +43,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
     RatingBar mRatingBar;
     TextView mDistance;
     TextView mWorkmates;
+    TextView mWorkmatesNumber;
     double currentLat = 0, currentLong = 0;
     String mPosition = currentLat + "," + currentLong;
 
@@ -48,6 +56,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
         mRatingBar = itemView.findViewById(R.id.list_rating);
         mDistance = itemView.findViewById(R.id.list_distance);
         mWorkmates = itemView.findViewById(R.id.list_workMates);
+        mWorkmatesNumber = itemView.findViewById(R.id.list_workMatesNumber);
 
         client = LocationServices.getFusedLocationProviderClient(itemView.getContext());
 
@@ -73,13 +82,8 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
         //restaurant rating
         restaurantRating(results);
 
-        //restaurant distance
-
-
-        /*
         //for numberWorkmates
         numberWorkmates(results.getPlaceId());
-        */
 
         //for retrieve opening hours (open or closed)
         if (results.getOpeningHours() != null) {
@@ -157,13 +161,13 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
         android.location.Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, distanceResults);
     }
 
-    /*
+
     /**
      * For retrieve number workmates who choose restaurant
      *
      * @param placeId
      */
-    /*
+
     private void numberWorkmates(String placeId) {
 
         UserHelper.getUsersCollection()
@@ -179,17 +183,11 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
                             }
                             int numberWorkmates = Objects.requireNonNull(task.getResult()).size();
                             String workmatesNumber = "(" + numberWorkmates + ")";
-                            mWormates.setText(workmatesNumber);
-
-
+                            mWorkmatesNumber.setText(workmatesNumber);
                         } else {
                             Log.e("numberMatesError", "Error getting documents: ", task.getException());
                         }
                     }
                 });
     }
-
-     */
-
-
 }
