@@ -24,6 +24,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
@@ -42,8 +43,13 @@ import com.example.go4lunch.models.User;
 import com.example.go4lunch.utils.DatesAndHours;
 import com.example.go4lunch.utils.FirebaseUtils;
 import com.example.go4lunch.utils.PlaceStream;
+import com.example.go4lunch.views.RestaurantAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -72,6 +78,11 @@ public class RestaurantActivity extends AppCompatActivity {
     private String formattedPhoneNumber;
     private String url;
 
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference collectionUsers = db.collection("users");
+    private RestaurantAdapter restaurantAdapter;
+    private Disposable mDisposable;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +101,7 @@ public class RestaurantActivity extends AppCompatActivity {
         retrieveData();
         floatingBtn();
         starBtn();
+        setUpRecyclerView(placeId);
     }
 
     private void retrieveData() {
@@ -255,6 +267,57 @@ public class RestaurantActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    /**
+     * RecyclerView configuration Workmates
+     * @param placeId
+     */
+    private void setUpRecyclerView(String placeId) {
+
+        Query query = collectionUsers.whereEqualTo("placeId", placeId);
+
+        FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
+                .setQuery(query, User.class)
+                .build();
+        this.restaurantAdapter = new RestaurantAdapter(options, Glide.with(this));
+        mRecyclerViewRestaurant.setHasFixedSize(true);
+        mRecyclerViewRestaurant.setAdapter(restaurantAdapter);
+        mRecyclerViewRestaurant.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        restaurantAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        restaurantAdapter.stopListening();
+    }
+
+    /**
+     * dispose subscription
+     */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        this.disposeWhenDestroy();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    /**
+     * dispose subscription
+     */
+    private void disposeWhenDestroy() {
+        if (this.mDisposable != null && !this.mDisposable.isDisposed()) this.mDisposable.dispose();
     }
 
 }

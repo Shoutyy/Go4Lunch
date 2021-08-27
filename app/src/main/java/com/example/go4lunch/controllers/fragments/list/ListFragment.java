@@ -61,18 +61,6 @@ public class ListFragment extends Fragment {
         View root = binding.getRoot();
         mRecyclerView = binding.fragmentListRV;
 
-        /*
-        this.resultSearches = new ArrayList<>();
-        //create adapter passing the list of restaurants
-        this.adapter = new ListAdapter(this.resultSearches, Glide.with(this), this.mPosition);
-
-        //Attach the adapter to the recyclerview to items
-        mRecyclerView.setAdapter(adapter);
-        //Set layout manager to position the items
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-         */
-
         this.configureRecyclerView();
 
         client = LocationServices.getFusedLocationProviderClient(getContext());
