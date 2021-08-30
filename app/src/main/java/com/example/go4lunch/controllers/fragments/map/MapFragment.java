@@ -76,13 +76,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         binding = FragmentMapBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         View button = root.findViewById(R.id.ic_search);
-        button.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startAutocompleteActivity();
-                    }
-                });
 
         Places.initialize(getActivity().getApplicationContext(), API_KEY);
 
@@ -115,7 +108,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void getCurrentLocation() {
-        @SuppressWarnings({"ResourceType"}) Task<Location> task = client.getLastLocation();
+        @SuppressLint("MissingPermission") @SuppressWarnings({"ResourceType"}) Task<Location> task = client.getLastLocation();
         task.addOnSuccessListener(location -> {
             if (location != null) {
                 supportMapFragment.getMapAsync(googleMap -> {
@@ -144,20 +137,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
         mGoogleMap.setMyLocationEnabled(true);
-    }
-
-    public void startAutocompleteActivity() {
-        Intent intent = new Autocomplete.IntentBuilder(
-                AutocompleteActivityMode.OVERLAY,
-                Arrays.asList(Place.Field.ID, Place.Field.NAME))
-                .setTypeFilter(TypeFilter.ESTABLISHMENT)
-                .setLocationBias(RectangularBounds.newInstance(
-                new LatLng(currentLat, currentLong),
-                new LatLng(currentLat, currentLong)))
-                .setCountry("FR")
-                .build(getContext());
-        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
-       // this.executeHttpRequestWithRetrofit();
     }
 
     private void executeHttpRequestWithRetrofit() {

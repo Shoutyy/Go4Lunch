@@ -1,6 +1,7 @@
 package com.example.go4lunch.utils;
 
 import com.example.go4lunch.BuildConfig;
+import com.example.go4lunch.models.autocomplete.AutoCompleteResult;
 import com.example.go4lunch.models.detail.PlaceDetail;
 import com.example.go4lunch.models.nerby_search.PlaceInfo;
 import com.example.go4lunch.models.nerby_search.ResultSearch;
@@ -22,6 +23,10 @@ public interface PlaceService {
     //PlaceDetails API Request
     @GET("maps/api/place/details/json?key="+API_KEY)
     Observable<PlaceDetail> getDetails(@Query("place_id") String placeId);
+
+    //Autocomplete API Request
+    @GET("maps/api/place/autocomplete/json?strictbounds&types=establishment&key="+API_KEY)
+    Observable<AutoCompleteResult> getAutocomplete(@Query("input") String input, @Query("radius") int radius, @Query("location") String location);
 
     public static final Retrofit retrofit = new Retrofit.Builder()
             //define root URL
