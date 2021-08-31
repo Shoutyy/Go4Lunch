@@ -26,7 +26,7 @@ public interface PlaceService {
 
     //Autocomplete API Request
     @GET("maps/api/place/autocomplete/json?strictbounds&types=establishment&key="+API_KEY)
-    Observable<AutoCompleteResult> getAutocomplete(@Query("input") String input, @Query("radius") int radius, @Query("location") String location);
+    Observable<AutoCompleteResult> getAutoComplete(@Query("input") String input, @Query("radius") int radius, @Query("location") String location);
 
     public static final Retrofit retrofit = new Retrofit.Builder()
             //define root URL

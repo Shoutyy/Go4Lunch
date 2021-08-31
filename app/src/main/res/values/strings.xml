@@ -79,4 +79,6 @@
     <string name="unknown_error">Error unknown error</string>
     <string name="succeed_connection">Connection succeed</string>
 
+    <string name="search">Search</string>
+
 </resources>
