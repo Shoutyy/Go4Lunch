@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import com.example.go4lunch.R;
 import com.bumptech.glide.RequestManager;
 
-import com.example.go4lunch.models.nerby_search.ResultSearch;
+import com.example.go4lunch.models.detail.PlaceDetail;
 
 import java.util.List;
 
@@ -19,32 +19,20 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
     //Declarations
     private String mPosition;
     private RequestManager glide;
-    private List<ResultSearch> resultSearches;
+    private List<PlaceDetail> placeDetails;
 
     public void setPosition(String position) {
         mPosition = position;
     }
 
-    /**
-     * Constructor
-     *
-     * @param resultSearches
-     * @param glide
-     * @param mPosition
-     */
-    public ListAdapter(List<ResultSearch> resultSearches, RequestManager glide, String mPosition) {
-        this.resultSearches = resultSearches;
+
+    public ListAdapter(List<PlaceDetail> placeDetails, RequestManager glide, String mPosition) {
+        this.placeDetails = placeDetails;
         this.glide = glide;
         this.mPosition = mPosition;
     }
 
-    /**
-     * Create viewHolder
-     *
-     * @param parent
-     * @param viewType
-     * @return
-     */
+
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -64,7 +52,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
      */
     @Override
     public void onBindViewHolder(@NonNull ListViewHolder viewHolder, int position) {
-        viewHolder.updateWithData(this.resultSearches.get(position), this.glide, this.mPosition);
+        viewHolder.updateWithData(this.placeDetails.get(position).getResult(), this.glide, this.mPosition);
     }
 
     /**
@@ -74,10 +62,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
      */
     @Override
     public int getItemCount() {
-        return this.resultSearches.size();
+        return this.placeDetails.size();
     }
 
-    public ResultSearch getRestaurant(int position){
-        return this.resultSearches.get(position);
+    public PlaceDetail getRestaurant(int position){
+        return this.placeDetails.get(position);
     }
 }

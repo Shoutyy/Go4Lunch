@@ -62,7 +62,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     SupportMapFragment supportMapFragment;
     GoogleMap mGoogleMap;
     private static final String TAG = "MyMapFragment";
-    private static int AUTOCOMPLETE_REQUEST_CODE = 1;
     double currentLat = 0, currentLong = 0;
     String mPosition = currentLat + "," + currentLong;
     String API_KEY = BuildConfig.MAPS_API_KEY;
@@ -144,12 +143,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void executeHttpRequestWithRetrofit() {
-        this.disposable = PlaceStream.streamFetchRestaurantList(mPosition, 300, "restaurant")
-                .subscribeWith(new DisposableSingleObserver<List<ResultSearch>>() {
+        this.disposable = PlaceStream.streamFetchRestaurantDetails(mPosition, 300, "restaurant")
+                .subscribeWith(new DisposableSingleObserver<List<PlaceDetail>>() {
 
                     @Override
-                    public void onSuccess(@NotNull List<ResultSearch> resultSearches) {
-                        positionMarker(resultSearches);
+                    public void onSuccess(@NotNull List<PlaceDetail> placeDetails) {
+                        positionMarker(placeDetails);
                     }
 
                     @Override
@@ -159,19 +158,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 });
     }
 
-    private void positionMarker(List<ResultSearch> resultSearches) {
+    private void positionMarker(List<PlaceDetail> placeDetails) {
         mGoogleMap.clear();
-        for (ResultSearch search : resultSearches) {
-           LatLng latLng = new LatLng(search.getGeometry().getLocation().getLat(),
-                   search.getGeometry().getLocation().getLng()
+        for (PlaceDetail detail : placeDetails) {
+            LatLng latLng = new LatLng(detail.getResult().getGeometry().getLocation().getLat(),
+                    detail.getResult().getGeometry().getLocation().getLng()
             );
             positionMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.place_unbook_24))
-                    .title(search.getName())
-                    .snippet(search.getVicinity()));
+                    .title(detail.getResult().getName())
+                    .snippet(detail.getResult().getVicinity()));
         }
     }
 
+    /*
     private void positionMarkerAutocomplete(List<PlaceDetail> placeDetails) {
         mGoogleMap.clear();
         for (PlaceDetail detail : placeDetails) {
@@ -189,6 +189,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+     */
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -199,12 +201,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (this.disposable != null && !this.disposable.isDisposed()) this.disposable.dispose();
     }
 
-    /**
-     * For SearchView
-     *
-     * @param menu
-     * @param inflater
-     */
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -238,7 +235,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     @Override
                     public void onSuccess(List<PlaceDetail> placeDetails) {
-                        positionMarkerAutocomplete(placeDetails);
+                        positionMarker(placeDetails);
                     }
 
                     @Override

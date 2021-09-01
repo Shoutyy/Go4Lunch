@@ -2,12 +2,16 @@ package com.example.go4lunch.models.detail;
 
 import java.util.List;
 
+import com.example.go4lunch.models.nerby_search.OpeningHours;
 import com.example.go4lunch.models.nerby_search.Photo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class PlaceResult {
 
+    @SerializedName("opening_hours")
+    @Expose
+    private OpeningHours mOpeningHours;
     @SerializedName("address_components")
     @Expose
     private List<AddressComponent> addressComponents = null;
@@ -63,6 +67,14 @@ public class PlaceResult {
     @Expose
     private String website;
 
+
+    public OpeningHours getOpeningHours() {
+        return mOpeningHours;
+    }
+
+    public void setOpeningHours(OpeningHours openingHours) {
+        mOpeningHours = openingHours;
+    }
     public List<AddressComponent> getAddressComponents() {
         return addressComponents;
     }

@@ -8,11 +8,15 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -26,6 +30,7 @@ import com.example.go4lunch.R;
 
 import com.example.go4lunch.controllers.activities.RestaurantActivity;
 import com.example.go4lunch.databinding.FragmentListBinding;
+import com.example.go4lunch.models.detail.PlaceDetail;
 import com.example.go4lunch.models.nerby_search.ResultSearch;
 import com.example.go4lunch.utils.ItemClickSupport;
 import com.example.go4lunch.utils.PlaceStream;
@@ -45,10 +50,11 @@ public class ListFragment extends Fragment {
     private FragmentListBinding binding;
     private Disposable disposable;
     private List<ResultSearch> resultSearches;
+    private List<PlaceDetail> placeDetails;
     private ListAdapter adapter;
+    private ListAdapter adapterA;
     private RecyclerView mRecyclerView;
     FusedLocationProviderClient client;
-    private static int AUTOCOMPLETE_REQUEST_CODE = 1;
     double currentLat = 0, currentLong = 0;
     String mPosition = currentLat + "," + currentLong;
 
@@ -59,6 +65,9 @@ public class ListFragment extends Fragment {
 
         binding = FragmentListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        setHasOptionsMenu(true);
+
         mRecyclerView = binding.fragmentListRV;
 
         this.configureRecyclerView();
@@ -71,24 +80,23 @@ public class ListFragment extends Fragment {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
 
-        //executeHttpRequestWithRetrofit();
         return root;
     }
 
     private void configureRecyclerView() {
-        this.resultSearches = new ArrayList<>();
-        this.adapter = new ListAdapter(this.resultSearches, Glide.with(this), this.mPosition);
+        this.placeDetails = new ArrayList<>();
+        this.adapter = new ListAdapter(this.placeDetails, Glide.with(this), this.mPosition);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void executeHttpRequestWithRetrofit() {
-        this.disposable = PlaceStream.streamFetchRestaurantList(mPosition, 300, "restaurant")
-                .subscribeWith(new DisposableSingleObserver<List<ResultSearch>>() {
+        this.disposable = PlaceStream.streamFetchRestaurantDetails(mPosition, 300, "restaurant")
+                .subscribeWith(new DisposableSingleObserver<List<PlaceDetail>>() {
 
                     @Override
-                    public void onSuccess(@NotNull List<ResultSearch> resultSearches) {
-                        updateUI(resultSearches);
+                    public void onSuccess(@NotNull List<PlaceDetail> placeDetails) {
+                        updateUI(placeDetails);
                     }
 
                     @Override
@@ -120,10 +128,10 @@ public class ListFragment extends Fragment {
         }
     }
 
-    private void updateUI(List<ResultSearch> resultSearches) {
-        this.resultSearches.clear();
-        this.resultSearches.addAll(resultSearches);
-        Log.d("TestUI", resultSearches.toString());
+    private void updateUI(List<PlaceDetail> placeDetails) {
+        this.placeDetails.clear();
+        this.placeDetails.addAll(placeDetails);
+       // Log.d("TestUI", resultSearches.toString());
         adapter.notifyDataSetChanged();
     }
 
@@ -151,10 +159,53 @@ public class ListFragment extends Fragment {
     private void configureOnClickRecyclerView() {
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_list_item)
                 .setOnItemClickListener(((recyclerView, position, v) -> {
-                    ResultSearch resultSearch = adapter.getRestaurant(position);
+                    PlaceDetail placeDetail = adapter.getRestaurant(position);
                     Intent intent = new Intent(getActivity(), RestaurantActivity.class);
-                    intent.putExtra("placeId", resultSearch.getPlaceId());
+                    intent.putExtra("placeId", placeDetail.getResult().getPlaceId());
                     startActivity(intent);
                 }));
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.toolbar_menu, menu);
+        MenuItem item = menu.findItem(R.id.actionSearch);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        SearchView searchView = (SearchView) item.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.isEmpty()) {
+                    executeHttpRequestWithRetrofit();
+                }
+                executeHttpRequestWithRetrofitAutocomplete(newText);
+                return true;
+            }
+        });
+    }
+    private void executeHttpRequestWithRetrofitAutocomplete(String input) {
+
+        this.disposable = PlaceStream.streamFetchAutoCompleteInfos(input, 2000, mPosition)
+                .subscribeWith(new DisposableSingleObserver<List<PlaceDetail>>() {
+
+                    @Override
+                    public void onSuccess(List<PlaceDetail> placeDetails) {
+                        updateUI(placeDetails);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("TestAutocomplete", Log.getStackTraceString(e));
+                    }
+                });
     }
 }

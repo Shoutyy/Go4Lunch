@@ -4,7 +4,6 @@ package com.example.go4lunch.utils;
 import com.example.go4lunch.models.autocomplete.AutoCompleteResult;
 import com.example.go4lunch.models.autocomplete.Prediction;
 import com.example.go4lunch.models.detail.PlaceDetail;
-import com.example.go4lunch.models.detail.PlaceResult;
 import com.example.go4lunch.models.nerby_search.PlaceInfo;
 import com.example.go4lunch.models.nerby_search.ResultSearch;
 
@@ -36,6 +35,7 @@ public class PlaceStream {
                 .timeout(10, TimeUnit.SECONDS);
     }
 
+    /*
     public static  Single<List<ResultSearch>> streamFetchRestaurantList(String location, int radius, String type){
         return streamFetchRestaurants(location,radius,type)
                 .flatMapIterable(PlaceInfo::getResults)
@@ -43,6 +43,28 @@ public class PlaceStream {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .timeout(10, TimeUnit.SECONDS);
+    }
+
+     */
+
+    //For 2 chained requests
+    public static Single<List<PlaceDetail>> streamFetchRestaurantDetails(String location, int radius, String type) {
+        return streamFetchRestaurants(location, radius, type)
+                .flatMapIterable(new Function<PlaceInfo, List<ResultSearch>>() {
+                    @Override
+                    public List<ResultSearch> apply(PlaceInfo googleApi) throws Exception {
+                        return googleApi.getResults();
+                    }
+                })
+                .flatMap(new Function<ResultSearch, Observable<PlaceDetail>>() {
+                    @Override
+                    public Observable<PlaceDetail> apply(ResultSearch resultSearch) throws Exception {
+                        return streamFetchDetails(resultSearch.getPlaceId());
+                    }
+                })
+                .toList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     //For autocomplete
@@ -53,20 +75,6 @@ public class PlaceStream {
                 .timeout(10, TimeUnit.SECONDS);
     }
 
-    /*
-    public static  Observable<List<PlaceResult>> streamFetchAutoCompleteInfo(String input, int radius, String location){
-        return mapPlacesService.getAutoComplete(input, radius, location)
-                .flatMapIterable(AutoCompleteResult::getPredictions)
-                .flatMap(info -> mapPlacesService.getDetails(info.getPlaceId()))
-                .map(PlaceDetail::getResult)
-                .toList()
-                .toObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .timeout(10, TimeUnit.SECONDS);
-    }
-
-     */
     public static Single<List<PlaceDetail>> streamFetchAutoCompleteInfos(String input, int radius, String location) {
         return streamFetchAutoComplete(input, radius, location)
                 .flatMapIterable(new Function<AutoCompleteResult, List<Prediction>>() {
@@ -77,7 +85,6 @@ public class PlaceStream {
 
                         for (Prediction prediction : autoCompleteResult.getPredictions()) {
                             if (prediction.getTypes().contains("food")) {
-
                                 food.add(prediction);
                             }
                         }
@@ -94,5 +101,4 @@ public class PlaceStream {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
-
 }

@@ -15,6 +15,8 @@ import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.api.UserHelper;
+import com.example.go4lunch.models.detail.PlaceDetail;
+import com.example.go4lunch.models.detail.PlaceResult;
 import com.example.go4lunch.models.nerby_search.ResultSearch;
 import com.example.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -71,42 +73,42 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
 
     }
 
-    public void updateWithData(ResultSearch results, RequestManager glide, String mPosition) {
+    public void updateWithData(PlaceResult result, RequestManager glide, String mPosition) {
         //restaurant name
-        this.mName.setText(results.getName());
+        this.mName.setText(result.getName());
 
         //restaurant address
-        this.mAddress.setText(results.getVicinity());
+        this.mAddress.setText(result.getVicinity());
 
-        getCurrentLocation(results);
+        getCurrentLocation(result);
         //restaurant rating
-        restaurantRating(results);
+        restaurantRating(result);
 
         //for numberWorkmates
-        numberWorkmates(results.getPlaceId());
+        numberWorkmates(result.getPlaceId());
 
         //for retrieve opening hours (open or closed)
-        if (results.getOpeningHours() != null) {
+        if (result.getOpeningHours() != null) {
 
-            if (results.getOpeningHours().getOpenNow().toString().equals("false")) {
+            if (result.getOpeningHours().getOpenNow().toString().equals("false")) {
                 this.mOpenHours.setText(R.string.closed);
                 this.mOpenHours.setTextColor((ContextCompat.getColor(itemView.getContext(),
                         R.color.closed)));
-            } else if (results.getOpeningHours().getOpenNow().toString().equals("true")) {
+            } else if (result.getOpeningHours().getOpenNow().toString().equals("true")) {
                 this.mOpenHours.setText(R.string.open);
                 this.mOpenHours.setTextColor((ContextCompat.getColor(itemView.getContext(),
                         R.color.open)));
             }
         }
 
-        if (results.getOpeningHours() == null) {
+        if (result.getOpeningHours() == null) {
             this.mOpenHours.setText(R.string.opening_hours_not_available);
             this.mOpenHours.setTextColor(Color.BLACK);
         }
 
         //for add photos with Glide
-        if (results.getPhotos() != null && !results.getPhotos().isEmpty()) {
-            glide.load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=400&photoreference=" + results.getPhotos().get(0).getPhotoReference() + "&key=" + API_KEY)
+        if (result.getPhotos() != null && !result.getPhotos().isEmpty()) {
+            glide.load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=400&photoreference=" + result.getPhotos().get(0).getPhotoReference() + "&key=" + API_KEY)
                     .into(mPhoto);
         } else {
             mPhoto.setImageResource(R.drawable.no_picture);
@@ -114,7 +116,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
     }
 
 
-    private void getCurrentLocation(ResultSearch results) {
+    private void getCurrentLocation(PlaceResult results) {
         @SuppressLint("MissingPermission") @SuppressWarnings({"ResourceType"}) Task<Location> task = client.getLastLocation();
         task.addOnSuccessListener(location -> {
             if (location != null) {
@@ -134,7 +136,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
      *
      * @param results
      */
-    private void restaurantRating(ResultSearch results) {
+    private void restaurantRating(PlaceResult results) {
         if (results.getRating() != null) {
             double restaurantRating = results.getRating();
             double rating = (restaurantRating / 5) * 3;
@@ -152,7 +154,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
      * @param startLocation
      * @param endLocation
      */
-    private void restaurantDistance(String startLocation, com.example.go4lunch.models.nerby_search.Location endLocation) {
+    private void restaurantDistance(String startLocation, com.example.go4lunch.models.detail.Location endLocation) {
         String[] separatedStart = startLocation.split(",");
         double startLatitude = Double.parseDouble(separatedStart[0]);
         double startLongitude = Double.parseDouble(separatedStart[1]);
