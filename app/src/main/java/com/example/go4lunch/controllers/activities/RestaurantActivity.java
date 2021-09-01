@@ -73,6 +73,8 @@ public class RestaurantActivity extends AppCompatActivity {
     private RequestManager mGlide;
 
     private static final int REQUEST_CALL = 100;
+    private static final String SELECTED = "SELECTED";
+    private static final String UNSELECTED = "UNSELECTED";
     String API_KEY = BuildConfig.MAPS_API_KEY;
     private String placeId;
     private String formattedPhoneNumber;
@@ -81,7 +83,7 @@ public class RestaurantActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionUsers = db.collection("users");
     private RestaurantAdapter restaurantAdapter;
-    private Disposable mDisposable;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -269,10 +271,6 @@ public class RestaurantActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * RecyclerView configuration Workmates
-     * @param placeId
-     */
     private void setUpRecyclerView(String placeId) {
 
         Query query = collectionUsers.whereEqualTo("placeId", placeId);
@@ -317,7 +315,7 @@ public class RestaurantActivity extends AppCompatActivity {
      * dispose subscription
      */
     private void disposeWhenDestroy() {
-        if (this.mDisposable != null && !this.mDisposable.isDisposed()) this.mDisposable.dispose();
+        if (this.disposable != null && !this.disposable.isDisposed()) this.disposable.dispose();
     }
 
 }

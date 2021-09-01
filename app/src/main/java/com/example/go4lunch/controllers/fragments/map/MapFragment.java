@@ -182,6 +182,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.place_unbook_24))
                     .title(detail.getResult().getName())
                     .snippet(detail.getResult().getVicinity()));
+            positionMarker.showInfoWindow();
+            PlaceResult placeDetailsResult = detail.getResult();
+            positionMarker.setTag(placeDetailsResult);
+            Log.d("detailResultMap", String.valueOf(placeDetailsResult));
         }
     }
 
@@ -234,7 +238,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     @Override
                     public void onSuccess(List<PlaceDetail> placeDetails) {
-
                         positionMarkerAutocomplete(placeDetails);
                     }
 
