@@ -156,6 +156,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         Log.e("TestDetail", Log.getStackTraceString(e));
                     }
                 });
+        if (mGoogleMap != null) {
+            mGoogleMap.setOnInfoWindowClickListener(marker -> {
+                //for retrieve result
+                Intent intent = new Intent(getContext(), RestaurantActivity.class);
+                intent.putExtra("placeId", positionMarker.getTag().toString());
+                startActivity(intent);
+            });
+        }
     }
 
     private void positionMarker(List<PlaceDetail> placeDetails) {
@@ -168,28 +176,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.place_unbook_24))
                     .title(detail.getResult().getName())
                     .snippet(detail.getResult().getVicinity()));
+            if (positionMarker != null) {
+                positionMarker.setTag(detail.getResult().getPlaceId());
+            }
         }
     }
-
-    /*
-    private void positionMarkerAutocomplete(List<PlaceDetail> placeDetails) {
-        mGoogleMap.clear();
-        for (PlaceDetail detail : placeDetails) {
-            LatLng latLng = new LatLng(detail.getResult().getGeometry().getLocation().getLat(),
-                    detail.getResult().getGeometry().getLocation().getLng()
-            );
-            positionMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.place_unbook_24))
-                    .title(detail.getResult().getName())
-                    .snippet(detail.getResult().getVicinity()));
-            positionMarker.showInfoWindow();
-            PlaceResult placeDetailsResult = detail.getResult();
-            positionMarker.setTag(placeDetailsResult);
-            Log.d("detailResultMap", String.valueOf(placeDetailsResult));
-        }
-    }
-
-     */
 
     @Override
     public void onDestroy() {
@@ -200,7 +191,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void disposeWhenDestroy(){
         if (this.disposable != null && !this.disposable.isDisposed()) this.disposable.dispose();
     }
-
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -256,5 +246,4 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
          */
     }
-
 }
