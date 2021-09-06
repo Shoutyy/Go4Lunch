@@ -160,7 +160,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             mGoogleMap.setOnInfoWindowClickListener(marker -> {
                 //for retrieve result
                 Intent intent = new Intent(getContext(), RestaurantActivity.class);
-                intent.putExtra("placeId", positionMarker.getTag().toString());
+                intent.putExtra("placeId", marker.getTag().toString());
                 startActivity(intent);
             });
         }
@@ -233,17 +233,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         Log.e("TestAutocomplete", Log.getStackTraceString(e));
                     }
                 });
-        /*
-        mGoogleMap.setOnInfoWindowClickListener(marker -> {
-            //For retrieve result
-            PlaceResult positionMarkerList = (PlaceResult) positionMarker.getTag();
-            Intent intent = new Intent(getContext(), RestaurantActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("placeDetailsResult", positionMarkerList);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        });
-
-         */
+        if (mGoogleMap != null) {
+            mGoogleMap.setOnInfoWindowClickListener(marker -> {
+                //for retrieve result
+                Intent intent = new Intent(getContext(), RestaurantActivity.class);
+                intent.putExtra("placeId", marker.getTag().toString());
+                startActivity(intent);
+            });
+        }
     }
 }

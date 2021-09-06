@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.example.go4lunch.models.User;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ public class UserHelper {
      * Static referencement for request CRUD for Users Collection
      */
     private static final String COLLECTION_NAME = "users";
+    private static final String placeBook = null;
 
     /**
      * Collection reference
@@ -25,6 +27,10 @@ public class UserHelper {
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
 
+    public static Query getUsersBookCollection() {
+        return FirebaseFirestore.getInstance().collection(COLLECTION_NAME).whereEqualTo("placeId", placeBook);
+    }
+    
     /**
      * Create
      *
