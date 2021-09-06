@@ -25,6 +25,7 @@ import io.reactivex.observers.DisposableSingleObserver;
 
 import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.R;
+import com.example.go4lunch.api.UserHelper;
 import com.example.go4lunch.controllers.activities.RestaurantActivity;
 import com.example.go4lunch.databinding.FragmentMapBinding;
 import com.example.go4lunch.models.detail.PlaceDetail;
@@ -43,15 +44,19 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
@@ -172,13 +177,33 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             LatLng latLng = new LatLng(detail.getResult().getGeometry().getLocation().getLat(),
                     detail.getResult().getGeometry().getLocation().getLng()
             );
-            positionMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.place_unbook_24))
-                    .title(detail.getResult().getName())
-                    .snippet(detail.getResult().getVicinity()));
-            if (positionMarker != null) {
-                positionMarker.setTag(detail.getResult().getPlaceId());
-            }
+            UserHelper.getUsersCollection()
+                    .whereEqualTo("placeId", detail.getResult().getPlaceId())
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot documentSnapshot : Objects.requireNonNull(task.getResult())) {
+                                Log.d("numberWorkmates", documentSnapshot.getId() + " " + documentSnapshot.getData());
+                            }
+                            int numberWorkmates = Objects.requireNonNull(task.getResult()).size();
+                            if (numberWorkmates != 0) {
+                                positionMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.place_booked_24))
+                                        .title(detail.getResult().getName())
+                                        .snippet(detail.getResult().getVicinity()));
+                            } else {
+                                positionMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.place_unbook_24))
+                                        .title(detail.getResult().getName())
+                                        .snippet(detail.getResult().getVicinity()));
+                            }
+                            if (positionMarker != null) {
+                                positionMarker.setTag(detail.getResult().getPlaceId());
+                            }
+                        } else {
+                            Log.e("numberMatesError", "Error getting documents: ", task.getException());
+                        }
+                    });
         }
     }
 

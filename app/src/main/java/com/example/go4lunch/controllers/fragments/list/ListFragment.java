@@ -52,7 +52,6 @@ public class ListFragment extends Fragment {
     private List<ResultSearch> resultSearches;
     private List<PlaceDetail> placeDetails;
     private ListAdapter adapter;
-    private ListAdapter adapterA;
     private RecyclerView mRecyclerView;
     FusedLocationProviderClient client;
     double currentLat = 0, currentLong = 0;
