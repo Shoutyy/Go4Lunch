@@ -90,4 +90,8 @@
     <string name="alarm_on_btn" translatable="false">Alarm On</string>
     <string name="alarm_off_btn" translatable="false">Alarm Off</string>
 
+    <!-- Used in Navigation Drawer-->
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+
 </resources>
