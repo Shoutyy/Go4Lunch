@@ -79,6 +79,15 @@
     <string name="unknown_error">Error unknown error</string>
     <string name="succeed_connection">Connection succeed</string>
 
+    <!--AutoComplete-->
     <string name="search">Search</string>
+
+    <!--Settings-->
+    <string name="alarm_canceled">alarm canceled</string>
+    <string name="alarm_activated">Alarm activated for 12 h</string>
+
+    <!--Settings buttons-->
+    <string name="alarm_on_btn" translatable="false">Alarm On</string>
+    <string name="alarm_off_btn" translatable="false">Alarm Off</string>
 
 </resources>
