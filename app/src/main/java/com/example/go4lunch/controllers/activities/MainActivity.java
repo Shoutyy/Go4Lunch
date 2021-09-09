@@ -1,33 +1,52 @@
 package com.example.go4lunch.controllers.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.go4lunch.R;
+import com.example.go4lunch.api.UserHelper;
+import com.example.go4lunch.models.User;
+import com.example.go4lunch.models.detail.PlaceDetail;
+import com.example.go4lunch.utils.FirebaseUtils;
+import com.example.go4lunch.utils.PlaceStream;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 
 import com.example.go4lunch.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
+import static com.example.go4lunch.utils.FirebaseUtils.getCurrentUser;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final int SIGN_OUT_TASK = 100;
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
+    private NavigationView mNavigationView;
+    private Disposable mDisposable;
+    private PlaceDetail detail;
+    private String idRestaurant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        toolbar = findViewById(R.id.main_page_toolbar);
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -48,24 +65,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        toolbar = findViewById(R.id.main_page_toolbar);
+        mNavigationView = findViewById(R.id.main_page_nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+
         configureToolbar();
         configureDrawerLayout();
     }
 
-    /**
-     * Configure toolbar
-     */
     private void configureToolbar() {
         setSupportActionBar(toolbar);
     }
 
-    /**
-     * Configure Navigation Drawer Layout
-     */
     private void configureDrawerLayout() {
-        drawerLayout = findViewById(R.id.main_page_drawer_layout);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        this.drawerLayout = findViewById(R.id.main_page_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
@@ -74,6 +88,86 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+        int id = item.getItemId();
+        if (id == R.id.menu_drawer_lunch) {
+            if (FirebaseUtils.getCurrentUser() != null) {
+                UserHelper.getUser(getCurrentUser().getUid()).addOnSuccessListener(documentSnapshot -> {
+                    User user = documentSnapshot.toObject(User.class);
+                    if (Objects.requireNonNull(user).getPlaceId() != null) {
+                        userRestaurant(user);
+                    } else {
+                        Toast.makeText(getApplicationContext(), getString(R.string.no_restaurant_choose), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        } else if (id == R.id.menu_drawer_settings) {
+            Intent settingIntent = new Intent(this, SettingActivity.class);
+            startActivity(settingIntent);
+        } else if (id == R.id.menu_drawer_Logout) {
+            signOutFromUserFirebase();
+            Toast.makeText(getApplicationContext(), getString(R.string.deconnected), Toast.LENGTH_SHORT).show();
+        }
+        this.drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
+    private void userRestaurant(User users) {
+        idRestaurant = users.getPlaceId();
+        executeHttpRequestWithRetrofit();
+    }
+
+    private void executeHttpRequestWithRetrofit() {
+        this.mDisposable = PlaceStream.streamFetchDetails(idRestaurant)
+                .subscribeWith(new DisposableObserver<PlaceDetail>() {
+
+                    @Override
+                    public void onNext(PlaceDetail placeDetail) {
+
+                        detail = placeDetail;
+                        startForLunch();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (idRestaurant != null) {
+                            Log.d("your lunch request", "your lunch" + detail.getResult());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("onErrorYourLunch", Log.getStackTraceString(e));
+                    }
+                });
+    }
+
+    private void signOutFromUserFirebase() {
+        if (FirebaseUtils.getCurrentUser() != null) {
+            AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnSuccessListener(this, this.updateUIAfterRestRequestsCompleted());
+        }
+    }
+
+    private OnSuccessListener<Void> updateUIAfterRestRequestsCompleted() {
+        return aVoid -> {
+            finish();
+        };
+    }
+
+    public void startForLunch() {
+        Intent intent = new Intent(this, RestaurantActivity.class);
+        intent.putExtra("placeId", detail.getResult().getPlaceId());
+        this.startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

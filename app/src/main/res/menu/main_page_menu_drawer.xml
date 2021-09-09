@@ -5,7 +5,6 @@
 
     <group android:checkableBehavior="single">
         <item
-
             android:id="@+id/menu_drawer_lunch"
             android:icon="@drawable/baseline_local_dining_white_24"
             android:title="@string/your_lunch" />
@@ -17,7 +16,6 @@
             android:id="@+id/menu_drawer_Logout"
             android:icon="@drawable/baseline_power_settings_new_white_24"
             android:title="@string/logout" />
-
     </group>
 
 </menu>
