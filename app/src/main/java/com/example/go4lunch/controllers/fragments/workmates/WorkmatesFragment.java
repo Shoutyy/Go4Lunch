@@ -53,6 +53,7 @@ public class WorkmatesFragment extends Fragment {
         View root = binding.getRoot();
         mRecyclerViewMates = binding.fragmentWorkmatesRV;
 
+
         setUpRecyclerView();
         return root;
     }

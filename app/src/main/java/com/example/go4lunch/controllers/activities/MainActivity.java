@@ -2,14 +2,20 @@ package com.example.go4lunch.controllers.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.R;
 import com.example.go4lunch.api.UserHelper;
 import com.example.go4lunch.models.User;
@@ -72,6 +78,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         configureToolbar();
         configureDrawerLayout();
+        updateUINavHeader();
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.title_bar);
+        }
     }
 
     private void configureToolbar() {
@@ -168,6 +180,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             this.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    /**
+     * Update UI Nav Header in navigation drawer
+     */
+    private void updateUINavHeader() {
+        if (FirebaseUtils.getCurrentUser() != null) {
+            View headerView = mNavigationView.getHeaderView(0); //For return layout
+            ImageView mPhotoHeader = headerView.findViewById(R.id.photo_header);
+            TextView mNameHeader = headerView.findViewById(R.id.name_header);
+            TextView mMailHeader = headerView.findViewById(R.id.mail_header);
+            // get photo in Firebase
+            if (FirebaseUtils.getCurrentUser().getPhotoUrl() != null) {
+                Glide.with(this)
+                        .load(FirebaseUtils.getCurrentUser().getPhotoUrl())
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(mPhotoHeader);
+            } else {
+                mPhotoHeader.setImageResource(R.drawable.no_picture);
+            }
+            //Get email
+            String email = TextUtils.isEmpty(FirebaseUtils.getCurrentUser().getEmail()) ?
+                    ("No Email Found") : FirebaseUtils.getCurrentUser().getEmail();
+            //Get Name
+            String name = TextUtils.isEmpty(FirebaseUtils.getCurrentUser().getDisplayName()) ?
+                    ("No Username Found") : FirebaseUtils.getCurrentUser().getDisplayName();
+            //Update With data
+            mNameHeader.setText(name);
+            mMailHeader.setText(email);
         }
     }
 }

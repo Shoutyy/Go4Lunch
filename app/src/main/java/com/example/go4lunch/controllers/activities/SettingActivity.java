@@ -1,4 +1,6 @@
 package com.example.go4lunch.controllers.activities;
 
-public class SettingActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class SettingActivity extends AppCompatActivity {
 }

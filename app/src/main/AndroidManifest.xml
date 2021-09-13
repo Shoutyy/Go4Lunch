@@ -35,5 +35,8 @@
         <activity
             android:label="WebViewActivity"
             android:name=".controllers.activities.WebViewActivity"/>
+        <activity
+            android:label="SettingActivity"
+            android:name=".controllers.activities.SettingActivity"/>
     </application>
 </manifest>
