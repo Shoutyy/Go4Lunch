@@ -6,20 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".controllers.activities.SettingActivity">
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/alarmOn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="120dp"
-        android:background="@color/colorPrimary"
+        android:background="#4152AD"
         android:elevation="20dp"
         android:text="@string/alarm_on_btn"
-        android:textColor="#000"
+        android:textColor="#000000"
         android:textSize="15dp"
         app:cornerRadius="100dp" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/alarmOff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

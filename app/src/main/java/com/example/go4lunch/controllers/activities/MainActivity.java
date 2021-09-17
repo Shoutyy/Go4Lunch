@@ -1,7 +1,12 @@
 package com.example.go4lunch.controllers.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -22,6 +27,7 @@ import com.example.go4lunch.models.User;
 import com.example.go4lunch.models.detail.PlaceDetail;
 import com.example.go4lunch.utils.FirebaseUtils;
 import com.example.go4lunch.utils.PlaceStream;
+import com.example.go4lunch.utils.notification.AlertReceiver;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -41,6 +47,7 @@ import com.example.go4lunch.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
 import static com.example.go4lunch.utils.FirebaseUtils.getCurrentUser;
 
+import java.util.Calendar;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

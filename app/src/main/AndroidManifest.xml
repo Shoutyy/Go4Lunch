@@ -38,5 +38,6 @@
         <activity
             android:label="SettingActivity"
             android:name=".controllers.activities.SettingActivity"/>
+        <receiver android:name=".utils.notification.AlertReceiver"/>
     </application>
 </manifest>

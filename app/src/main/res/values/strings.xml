@@ -99,4 +99,10 @@
     <string name="no_restaurant_choose">No restaurant choose for the moment</string>
     <string name="deconnected">You\'re deconnected</string>
 
+    <!--Notifications-->
+    <string name="lunch_at">You\'re lunching at</string>
+    <string name="with">with</string>
+    <string name="alone">alone</string>
+    <string name="title_alarm">Your Today Lunch</string>
+
 </resources>
