@@ -43,9 +43,6 @@ public class WebViewActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * For return with arrow endPage
-     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();

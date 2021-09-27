@@ -20,7 +20,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 
 import com.example.go4lunch.BuildConfig;
@@ -29,11 +28,7 @@ import com.example.go4lunch.api.UserHelper;
 import com.example.go4lunch.controllers.activities.RestaurantActivity;
 import com.example.go4lunch.databinding.FragmentMapBinding;
 import com.example.go4lunch.models.detail.PlaceDetail;
-import com.example.go4lunch.models.detail.PlaceResult;
-import com.example.go4lunch.models.nerby_search.PlaceInfo;
-import com.example.go4lunch.models.nerby_search.ResultSearch;
 import com.example.go4lunch.utils.PlaceStream;
-import com.example.go4lunch.views.ListAdapter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -44,17 +39,14 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 

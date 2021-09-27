@@ -2,7 +2,6 @@ package com.example.go4lunch.views;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,11 +17,7 @@ import com.example.go4lunch.controllers.activities.RestaurantActivity;
 import com.example.go4lunch.models.detail.PlaceDetail;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.models.detail.PlaceResult;
-import com.example.go4lunch.models.nerby_search.ResultSearch;
-import com.example.go4lunch.utils.ItemClickSupport;
 import com.example.go4lunch.utils.PlaceStream;
-
-import java.io.Serializable;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
@@ -45,8 +40,6 @@ public class WorkmatesViewHolder extends RecyclerView.ViewHolder {
         mWorkmatesPhoto = itemView.findViewById(R.id.workmates_photo);
         mWorkmatesName = itemView.findViewById(R.id.workmates_name);
 
-        //for retrieve restaurant sheet on click workmates
-
             itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(v.getContext(), RestaurantActivity.class);
                 if (detail.getResult() != null) {
@@ -54,7 +47,6 @@ public class WorkmatesViewHolder extends RecyclerView.ViewHolder {
                     v.getContext().startActivity(intent);
                 }
             });
-
     }
 
     @SuppressLint("SetTextI18n")

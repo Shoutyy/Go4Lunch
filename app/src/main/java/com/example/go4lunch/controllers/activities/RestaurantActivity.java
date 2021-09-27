@@ -3,10 +3,6 @@ package com.example.go4lunch.controllers.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,15 +16,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
-import io.reactivex.observers.DisposableSingleObserver;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -38,22 +31,16 @@ import com.example.go4lunch.R;
 import com.example.go4lunch.api.UserHelper;
 import com.example.go4lunch.models.detail.PlaceDetail;
 import com.example.go4lunch.models.detail.PlaceResult;
-import com.example.go4lunch.models.nerby_search.ResultSearch;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.utils.DatesAndHours;
 import com.example.go4lunch.utils.FirebaseUtils;
 import com.example.go4lunch.utils.PlaceStream;
 import com.example.go4lunch.views.RestaurantAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.libraries.places.api.model.Place;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 import java.util.Objects;
 
 public class RestaurantActivity extends AppCompatActivity {
@@ -130,7 +117,6 @@ public class RestaurantActivity extends AppCompatActivity {
         this.disposable = PlaceStream.streamFetchDetails(placeId)
                 .subscribeWith(new DisposableObserver<PlaceDetail>() {
 
-
                     @Override
                     public void onNext(@NonNull PlaceDetail placeDetail) {
                         updateUI(placeDetail, mGlide);
@@ -138,12 +124,10 @@ public class RestaurantActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
                     }
 
                     @Override
                     public void onComplete() {
-
                     }
                 });
     }

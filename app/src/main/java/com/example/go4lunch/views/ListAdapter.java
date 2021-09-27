@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
-    //Declarations
     private String mPosition;
     private RequestManager glide;
     private List<PlaceDetail> placeDetails;
@@ -40,26 +39,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.fragment_list_item, parent, false);
 
-
         return new ListViewHolder(view);
     }
 
-    /**
-     * Update viewHolder with resultSearches
-     *
-     * @param viewHolder
-     * @param position
-     */
     @Override
     public void onBindViewHolder(@NonNull ListViewHolder viewHolder, int position) {
         viewHolder.updateWithData(this.placeDetails.get(position).getResult(), this.glide, this.mPosition);
     }
 
-    /**
-     * return the total count of items in the list
-     *
-     * @return
-     */
     @Override
     public int getItemCount() {
         return this.placeDetails.size();

@@ -4,7 +4,6 @@ import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.models.autocomplete.AutoCompleteResult;
 import com.example.go4lunch.models.detail.PlaceDetail;
 import com.example.go4lunch.models.nerby_search.PlaceInfo;
-import com.example.go4lunch.models.nerby_search.ResultSearch;
 
 import io.reactivex.Observable;
 import retrofit2.Retrofit;

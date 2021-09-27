@@ -22,24 +22,11 @@ public class WorkmatesAdapter extends FirestoreRecyclerAdapter<User, WorkmatesVi
 
     private RequestManager glide;
 
-    /**
-     * Create constructor
-     *
-     * @param options
-     * @param glide
-     */
     public WorkmatesAdapter(FirestoreRecyclerOptions<User> options, RequestManager glide) {
         super(options);
         this.glide = glide;
     }
 
-    /**
-     * Create ViewHolder
-     *
-     * @param parent
-     * @param viewType
-     * @return
-     */
     @NonNull
     @Override
     public WorkmatesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,13 +37,6 @@ public class WorkmatesAdapter extends FirestoreRecyclerAdapter<User, WorkmatesVi
         return new WorkmatesViewHolder(view);
     }
 
-    /**
-     * Update viewHolder
-     *
-     * @param workmatesViewHolder
-     * @param position
-     * @param model
-     */
     @Override
     protected void onBindViewHolder(@NonNull WorkmatesViewHolder workmatesViewHolder, int position, @NonNull User model) {
         workmatesViewHolder.updateWithDetails(model, this.glide);

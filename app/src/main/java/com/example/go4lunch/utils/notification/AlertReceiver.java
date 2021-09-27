@@ -49,23 +49,18 @@ public class AlertReceiver extends BroadcastReceiver {
         });
     }
 
-    /**
-     * RXJava Request for retrieve restaurant name and restaurant address
-     */
     private void executeHttpRequestWithRetrofit() {
         this.mDisposable = PlaceStream.streamFetchDetails(userIdNotif)
                 .subscribeWith(new DisposableObserver<PlaceDetail>() {
 
                     @Override
                     public void onNext(PlaceDetail placeDetail) {
-
                         detail = placeDetail;
                     }
 
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onComplete() {
-
                         if (userIdNotif != null) {
                             restaurantNotifName = detail.getResult().getName();
                             restaurantNotifAddress = detail.getResult().getVicinity();
@@ -82,11 +77,6 @@ public class AlertReceiver extends BroadcastReceiver {
                 });
     }
 
-    /**
-     * For retrieve workmates who chose this restaurant and the time
-     *
-     * @param userIdNotif
-     */
     private void workmatesNotif(String userIdNotif) {
 
         UserHelper.getUsersCollection()

@@ -3,7 +3,6 @@ package com.example.go4lunch.utils;
 import android.content.Context;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,11 +22,6 @@ public class FirebaseUtils {
     public static Boolean isCurrentUserLogged () {
         return (getCurrentUser() != null);
     }
-
-    /**
-     * Error Handler
-     * @return
-     */
 
     public static OnFailureListener onFailureListener(){
         return e -> Toast.makeText(context, R.string.unknown_error, Toast.LENGTH_LONG).show();

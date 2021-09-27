@@ -4,20 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +16,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.example.go4lunch.R;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.views.WorkmatesAdapter;
 
@@ -65,10 +54,6 @@ public class WorkmatesFragment extends Fragment {
     }
 
 
-    /**
-     * RecyclerView configuration
-     * Configure RecyclerView, Adapter, LayoutManager & glue it
-     */
     private void setUpRecyclerView() {
         Query query = collectionUsers.orderBy("placeId", Query.Direction.DESCENDING);
 
@@ -94,9 +79,6 @@ public class WorkmatesFragment extends Fragment {
         workmatesAdapter.stopListening();
     }
 
-    /**
-     * dispose subscription
-     */
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -109,9 +91,6 @@ public class WorkmatesFragment extends Fragment {
 
     }
 
-    /**
-     * dispose subscription
-     */
     private void disposeWhenDestroy() {
         if (this.mDisposable != null && !this.mDisposable.isDisposed()) this.mDisposable.dispose();
     }

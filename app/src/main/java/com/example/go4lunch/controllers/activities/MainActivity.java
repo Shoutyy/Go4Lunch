@@ -1,12 +1,8 @@
 package com.example.go4lunch.controllers.activities;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -27,7 +23,6 @@ import com.example.go4lunch.models.User;
 import com.example.go4lunch.models.detail.PlaceDetail;
 import com.example.go4lunch.utils.FirebaseUtils;
 import com.example.go4lunch.utils.PlaceStream;
-import com.example.go4lunch.utils.notification.AlertReceiver;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -47,7 +42,6 @@ import com.example.go4lunch.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
 import static com.example.go4lunch.utils.FirebaseUtils.getCurrentUser;
 
-import java.util.Calendar;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -75,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .build();
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-        //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
         toolbar = findViewById(R.id.main_page_toolbar);
@@ -142,7 +135,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     @Override
                     public void onNext(PlaceDetail placeDetail) {
-
                         detail = placeDetail;
                         startForLunch();
                     }
@@ -190,9 +182,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    /**
-     * Update UI Nav Header in navigation drawer
-     */
     private void updateUINavHeader() {
         if (FirebaseUtils.getCurrentUser() != null) {
             View headerView = mNavigationView.getHeaderView(0); //For return layout
@@ -210,10 +199,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             //Get email
             String email = TextUtils.isEmpty(FirebaseUtils.getCurrentUser().getEmail()) ?
-                    ("No Email Found") : FirebaseUtils.getCurrentUser().getEmail();
+                    (getString(R.string.info_no_email_found)) : FirebaseUtils.getCurrentUser().getEmail();
             //Get Name
             String name = TextUtils.isEmpty(FirebaseUtils.getCurrentUser().getDisplayName()) ?
-                    ("No Username Found") : FirebaseUtils.getCurrentUser().getDisplayName();
+                    (getString(R.string.info_no_username_found)) : FirebaseUtils.getCurrentUser().getDisplayName();
             //Update With data
             mNameHeader.setText(name);
             mMailHeader.setText(email);

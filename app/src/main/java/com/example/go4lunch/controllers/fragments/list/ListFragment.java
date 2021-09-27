@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
@@ -130,7 +129,6 @@ public class ListFragment extends Fragment {
     private void updateUI(List<PlaceDetail> placeDetails) {
         this.placeDetails.clear();
         this.placeDetails.addAll(placeDetails);
-       // Log.d("TestUI", resultSearches.toString());
         adapter.notifyDataSetChanged();
     }
 
@@ -149,6 +147,7 @@ public class ListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        getCurrentLocation();
     }
 
     private void disposeWhenDestroy() {

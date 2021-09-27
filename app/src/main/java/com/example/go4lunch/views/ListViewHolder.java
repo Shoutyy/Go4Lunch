@@ -1,8 +1,6 @@
 package com.example.go4lunch.views;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.util.Log;
@@ -12,12 +10,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.api.UserHelper;
-import com.example.go4lunch.models.detail.PlaceDetail;
 import com.example.go4lunch.models.detail.PlaceResult;
-import com.example.go4lunch.models.nerby_search.ResultSearch;
 import com.example.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -29,7 +24,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -61,33 +55,20 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
         mWorkmatesNumber = itemView.findViewById(R.id.list_workMatesNumber);
 
         client = LocationServices.getFusedLocationProviderClient(itemView.getContext());
-
-        /*
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            getCurrentLocation();
-        } else {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
-        }
-
-         */
-
     }
 
     public void updateWithData(PlaceResult result, RequestManager glide, String mPosition) {
-        //restaurant name
+
         this.mName.setText(result.getName());
 
-        //restaurant address
         this.mAddress.setText(result.getVicinity());
 
         getCurrentLocation(result);
-        //restaurant rating
+
         restaurantRating(result);
 
-        //for numberWorkmates
         numberWorkmates(result.getPlaceId());
 
-        //for retrieve opening hours (open or closed)
         if (result.getOpeningHours() != null) {
 
             if (result.getOpeningHours().getOpenNow().toString().equals("false")) {
@@ -106,7 +87,6 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
             this.mOpenHours.setTextColor(Color.BLACK);
         }
 
-        //for add photos with Glide
         if (result.getPhotos() != null && !result.getPhotos().isEmpty()) {
             glide.load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=400&photoreference=" + result.getPhotos().get(0).getPhotoReference() + "&key=" + API_KEY)
                     .into(mPhoto);
@@ -131,11 +111,6 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
         });
     }
 
-    /**
-     * For rating
-     *
-     * @param results
-     */
     private void restaurantRating(PlaceResult results) {
         if (results.getRating() != null) {
             double restaurantRating = results.getRating();
@@ -148,12 +123,6 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
         }
     }
 
-    /**
-     * For calculate restaurant distance
-     *
-     * @param startLocation
-     * @param endLocation
-     */
     private void restaurantDistance(String startLocation, com.example.go4lunch.models.detail.Location endLocation) {
         String[] separatedStart = startLocation.split(",");
         double startLatitude = Double.parseDouble(separatedStart[0]);
@@ -163,20 +132,12 @@ public class ListViewHolder extends RecyclerView.ViewHolder  {
         android.location.Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, distanceResults);
     }
 
-
-    /**
-     * For retrieve number workmates who choose restaurant
-     *
-     * @param placeId
-     */
-
     private void numberWorkmates(String placeId) {
 
         UserHelper.getUsersCollection()
                 .whereEqualTo("placeId", placeId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {

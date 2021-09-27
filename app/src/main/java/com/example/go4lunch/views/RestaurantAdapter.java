@@ -20,10 +20,6 @@ public class RestaurantAdapter extends FirestoreRecyclerAdapter<User, Restaurant
 
     private RequestManager glide;
 
-    /**
-     * Create constructor
-     * @param glide
-     */
     public RestaurantAdapter(FirestoreRecyclerOptions<User> options, RequestManager glide) {
         super(options);
         this.glide = glide;
@@ -37,7 +33,6 @@ public class RestaurantAdapter extends FirestoreRecyclerAdapter<User, Restaurant
         mRestaurantMatesName = view.findViewById(R.id.restaurant_mates_name);
         return new RestaurantViewHolder(view);
     }
-
 
     protected void onBindViewHolder(@NonNull RestaurantViewHolder restaurantViewHolder, int position, @NonNull User model) {
         restaurantViewHolder.updateWithData(model, this.glide);

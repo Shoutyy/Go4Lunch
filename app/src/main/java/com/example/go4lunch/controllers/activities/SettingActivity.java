@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -37,14 +36,11 @@ public class SettingActivity extends AppCompatActivity {
         alarmOff();
     }
 
-    /**
-     * For set time of notifications
-     */
     public void onTimeSet() {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, 11);
-        c.set(Calendar.MINUTE, 2);
-        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MINUTE, 47);
+        c.set(Calendar.SECOND, 00);
 
         startAlarm(c);
     }
@@ -61,9 +57,6 @@ public class SettingActivity extends AppCompatActivity {
         Objects.requireNonNull(alarmManager).setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
-    /**
-     * For cancel alarm
-     */
     private void cancelAlarm() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
@@ -72,9 +65,6 @@ public class SettingActivity extends AppCompatActivity {
         Objects.requireNonNull(alarmManager).cancel(pendingIntent);
     }
 
-    /**
-     * For button alarm off
-     */
     public void alarmOff() {
         mAlarmOff.setOnClickListener(v -> {
 
@@ -97,30 +87,24 @@ public class SettingActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * For button alarm on
-     */
     public void alarmOn() {
-        mAlarmOn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mAlarmOn.setOnClickListener(v -> {
 
-                onTimeSet();
-                Toast.makeText(getApplicationContext(), getString(R.string.alarm_activated), Toast.LENGTH_SHORT).show();
+            onTimeSet();
+            Toast.makeText(getApplicationContext(), getString(R.string.alarm_activated), Toast.LENGTH_SHORT).show();
 
-                if (mAlarmOn.isEnabled()) {
-                    mAlarmOn.setBackgroundColor(getResources().getColor(R.color.quantum_white_100));
-                    mAlarmOff.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                } else if (!mAlarmOn.isEnabled()) {
-                    mAlarmOn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    mAlarmOff.setBackgroundColor(getResources().getColor(R.color.quantum_white_100));
-                }
-                //For save preferences
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putBoolean("alarmOn", mAlarmOn.isEnabled());
-                editor.apply();
+            if (mAlarmOn.isEnabled()) {
+                mAlarmOn.setBackgroundColor(getResources().getColor(R.color.quantum_white_100));
+                mAlarmOff.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            } else if (!mAlarmOn.isEnabled()) {
+                mAlarmOn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                mAlarmOff.setBackgroundColor(getResources().getColor(R.color.quantum_white_100));
             }
+            //For save preferences
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean("alarmOn", mAlarmOn.isEnabled());
+            editor.apply();
         });
     }
 }

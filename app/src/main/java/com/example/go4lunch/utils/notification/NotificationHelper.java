@@ -43,12 +43,6 @@ public class NotificationHelper extends ContextWrapper {
         return mManager;
     }
 
-    /**
-     * for initialization notifications
-     *
-     * @param notifMessage
-     * @return
-     */
     public NotificationCompat.Builder getChannelNotification(String notifMessage) {
 
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
