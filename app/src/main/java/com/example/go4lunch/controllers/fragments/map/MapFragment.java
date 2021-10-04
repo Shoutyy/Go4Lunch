@@ -140,7 +140,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-        mGoogleMap.setMyLocationEnabled(true);
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mGoogleMap.setMyLocationEnabled(true);
+        }
     }
 
     private void executeHttpRequestWithRetrofit() {
