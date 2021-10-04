@@ -132,7 +132,6 @@ public class RestaurantActivity extends AppCompatActivity {
                 });
     }
 
-
     private void updateUI(PlaceDetail results, RequestManager glide) {
         mGlide = glide;
 

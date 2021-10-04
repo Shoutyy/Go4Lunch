@@ -77,8 +77,8 @@ public class AlertReceiver extends BroadcastReceiver {
                 });
     }
 
+    //For retrieve workmates who chose this restaurant and the time
     private void workmatesNotif(String userIdNotif) {
-
         UserHelper.getUsersCollection()
                 .whereEqualTo("placeId", userIdNotif)
                 .get()

@@ -29,10 +29,10 @@ public class NotificationHelper extends ContextWrapper {
     /**
      * For api 26 and up
      */
+    //assign notification to a channel
     @TargetApi(Build.VERSION_CODES.O)
     private void createChannel() {
         NotificationChannel channel = new NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH);
-
         getManager().createNotificationChannel(channel);
     }
 
@@ -43,10 +43,9 @@ public class NotificationHelper extends ContextWrapper {
         return mManager;
     }
 
+    //For initialization notifications
     public NotificationCompat.Builder getChannelNotification(String notifMessage) {
-
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
-
                 .setContentTitle(getString(R.string.title_alarm))
                 .setContentText(notifMessage)
                 .setSmallIcon(R.drawable.white_bowl_lowsize)

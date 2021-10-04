@@ -60,7 +60,6 @@ public class WebViewActivity extends AppCompatActivity {
                 webSettings.setDomStorageEnabled(true);
                 //Enable Javascript
                 webSettings.setJavaScriptEnabled(true);
-
                 // Force links and redirects to open in the WebView instead of in a browser
                 mWebView.setWebViewClient(new WebViewClient());
             }

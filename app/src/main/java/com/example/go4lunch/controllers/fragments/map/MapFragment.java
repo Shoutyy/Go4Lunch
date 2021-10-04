@@ -59,7 +59,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     FusedLocationProviderClient client;
     SupportMapFragment supportMapFragment;
     GoogleMap mGoogleMap;
-    private static final String TAG = "MyMapFragment";
     double currentLat = 0, currentLong = 0;
     String mPosition = currentLat + "," + currentLong;
     String API_KEY = BuildConfig.MAPS_API_KEY;
@@ -79,12 +78,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         setHasOptionsMenu(true);
 
         Places.initialize(getActivity().getApplicationContext(), API_KEY);
-
         PlacesClient placesClient = Places.createClient(getContext());
 
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(this);
-
         client = LocationServices.getFusedLocationProviderClient(getContext());
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {

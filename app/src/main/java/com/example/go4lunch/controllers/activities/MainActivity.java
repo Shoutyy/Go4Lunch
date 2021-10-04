@@ -62,8 +62,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
                 .build();
@@ -98,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
     }
 
+    //Handle navigation item click in navigation drawer
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -142,13 +141,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onComplete() {
                         if (idRestaurant != null) {
-                            Log.d("your lunch request", "your lunch" + detail.getResult());
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d("onErrorYourLunch", Log.getStackTraceString(e));
                     }
                 });
     }
@@ -182,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    //Update UI Nav Header in navigation drawer
     private void updateUINavHeader() {
         if (FirebaseUtils.getCurrentUser() != null) {
             View headerView = mNavigationView.getHeaderView(0); //For return layout

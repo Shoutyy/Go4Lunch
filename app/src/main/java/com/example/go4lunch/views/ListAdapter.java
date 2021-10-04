@@ -24,13 +24,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
         mPosition = position;
     }
 
-
     public ListAdapter(List<PlaceDetail> placeDetails, RequestManager glide, String mPosition) {
         this.placeDetails = placeDetails;
         this.glide = glide;
         this.mPosition = mPosition;
     }
-
 
     @NonNull
     @Override

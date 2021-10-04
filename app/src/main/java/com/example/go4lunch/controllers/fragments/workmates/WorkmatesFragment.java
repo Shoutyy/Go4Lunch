@@ -64,7 +64,6 @@ public class WorkmatesFragment extends Fragment {
         binding = null;
     }
 
-
     private void setUpRecyclerView() {
         Query query = collectionUsers.orderBy("placeId", Query.Direction.DESCENDING);
 

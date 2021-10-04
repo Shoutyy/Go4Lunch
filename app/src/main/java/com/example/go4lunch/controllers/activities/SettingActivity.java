@@ -36,6 +36,7 @@ public class SettingActivity extends AppCompatActivity {
         alarmOff();
     }
 
+    //For set time of notifications
     public void onTimeSet() {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, 12);
@@ -45,7 +46,7 @@ public class SettingActivity extends AppCompatActivity {
         startAlarm(c);
     }
 
-
+    //For notification
     private void startAlarm(Calendar c) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);

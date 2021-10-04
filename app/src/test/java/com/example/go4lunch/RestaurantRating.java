@@ -19,7 +19,6 @@ public class RestaurantRating {
         float final_rating3 = (rating_3 / 5) * 3;
         float final_rating4 = (rating_4 / 5) * 3;
 
-
         Assert.assertEquals(1.2,final_rating1, 0.1);
         Assert.assertEquals(1.8,final_rating2, 0.1);
         Assert.assertEquals(2.4,final_rating3, 0.1);

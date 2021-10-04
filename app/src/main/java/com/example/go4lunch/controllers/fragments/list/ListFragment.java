@@ -172,6 +172,7 @@ public class ListFragment extends Fragment {
                 }));
     }
 
+    //For SearchView
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -197,6 +198,8 @@ public class ListFragment extends Fragment {
             }
         });
     }
+
+    //HTTP request RX Java for restaurants
     private void executeHttpRequestWithRetrofitAutocomplete(String input) {
 
         this.disposable = PlaceStream.streamFetchAutoCompleteInfos(input, 2000, mPosition)

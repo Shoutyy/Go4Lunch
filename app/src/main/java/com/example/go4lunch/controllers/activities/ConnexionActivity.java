@@ -54,8 +54,6 @@ public class ConnexionActivity extends BaseActivity<ActivityConnexionBinding> {
             .setEmailButtonId(R.id.mailButton)
             .setTwitterButtonId(R.id.twitterButton)
             .setFacebookButtonId(R.id.facebookButton)
-            // ...
-            //.setTosAndPrivacyPolicyId(R.id.baz)
             .build();
 
     private void startSignInActivity() {
@@ -89,9 +87,7 @@ public class ConnexionActivity extends BaseActivity<ActivityConnexionBinding> {
         Snackbar.make(binding.connexionLayout, message, Snackbar.LENGTH_SHORT).show();
     }
 
-    /**
-     * Http request that create user in firestore
-     */
+    //Http request that create user in Firestore
     private void createUserInFirestore() {
         String urlPicture = (getCurrentUser().getPhotoUrl() != null) ?
                 getCurrentUser().getPhotoUrl().toString() : null;
@@ -113,7 +109,6 @@ public class ConnexionActivity extends BaseActivity<ActivityConnexionBinding> {
         if (requestCode == RC_SIGN_IN) {
             // SUCCESS
             if (resultCode == RESULT_OK) {
-               // userManager.createUser();
                 showSnackBar(getString(R.string.connection_succeed));
                 this.createUserInFirestore();
                 Intent intent = new Intent(this, MainActivity.class);
