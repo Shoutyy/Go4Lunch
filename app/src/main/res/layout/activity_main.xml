@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#DCEDC8"
+        android:background="#FFFFFF"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/main_page_nav_header"
         app:menu="@menu/main_page_menu_drawer"

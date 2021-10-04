@@ -6,12 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.go4lunch.R;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -22,6 +25,8 @@ import com.example.go4lunch.views.WorkmatesAdapter;
 import io.reactivex.disposables.Disposable;
 
 import com.example.go4lunch.databinding.FragmentWorkmatesBinding;
+
+import java.util.Objects;
 
 public class WorkmatesFragment extends Fragment {
 
@@ -45,6 +50,12 @@ public class WorkmatesFragment extends Fragment {
 
         setUpRecyclerView();
         return root;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.title_workmate);
     }
 
     @Override

@@ -93,7 +93,8 @@
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 
     <!--MainPage-->
-    <string name="title_bar" translatable="false">I\'m Hungry</string>
+    <string name="title_bar">I\'m Hungry</string>
+    <string name="title_workmate">Available workmates</string>
     <string name="no_restaurant_choose">No restaurant choose for the moment</string>
     <string name="deconnected">You\'re deconnected</string>
 

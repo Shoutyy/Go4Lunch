@@ -21,6 +21,7 @@ public class DateAndHoursTest {
         assertEquals(newHour,actualHour );
 
     }
+
     @Test
     public void convertStringToHoursTest() {
 

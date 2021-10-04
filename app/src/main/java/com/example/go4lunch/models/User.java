@@ -41,10 +41,7 @@ public class User implements Serializable {
         return currentTime;
     }
 
-    /**
-     * Setters
-     * @param username
-     */
+
     public void setUsername(String username) { this.username = username; }
     public void setUid(String uid) { this.uid = uid; }
     public void setUrlPicture(String urlPicture) { this.urlPicture = urlPicture; }

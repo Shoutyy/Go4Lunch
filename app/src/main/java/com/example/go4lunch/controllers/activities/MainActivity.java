@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (FirebaseUtils.getCurrentUser() != null) {
             View headerView = mNavigationView.getHeaderView(0); //For return layout
             ImageView mPhotoHeader = headerView.findViewById(R.id.photo_header);
+            TextView mTitleHeader = headerView.findViewById(R.id.title_nav_header);
             TextView mNameHeader = headerView.findViewById(R.id.name_header);
             TextView mMailHeader = headerView.findViewById(R.id.mail_header);
             // get photo in Firebase
@@ -204,6 +205,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             String name = TextUtils.isEmpty(FirebaseUtils.getCurrentUser().getDisplayName()) ?
                     (getString(R.string.info_no_username_found)) : FirebaseUtils.getCurrentUser().getDisplayName();
             //Update With data
+            mTitleHeader.setText(R.string.app_name);
             mNameHeader.setText(name);
             mMailHeader.setText(email);
         }
