@@ -13,7 +13,7 @@ Un système de notification est disponible, il  vous rappel votre choix de resta
 ![Map](https://user-images.githubusercontent.com/37068762/168565002-311dac7c-155c-478f-82f1-9c384c2dac3b.png)
 ![Notification](https://user-images.githubusercontent.com/37068762/168565005-82bd2682-efd7-4114-bb3e-4c28254b868b.png)
 ![Recherche](https://user-images.githubusercontent.com/37068762/168565007-a745c630-8da2-4ab2-9fa4-a5ef365c82b9.png)
-![Setting](https://user-images.githubusercontent.com/37068762/168565010-32e4212a-a7e4-4180-84aa-403f309d3fe2.png)
+![Setting](https://user-images.githubusercontent.com/37068762/168565135-502e0f25-7bcc-44ae-bb0c-c4c18f405557.png)
 ![Workmate](https://user-images.githubusercontent.com/37068762/168565013-ad6e29b2-ebae-4d40-96fd-452ad700ca75.png)
 
 
